@@ -2,7 +2,9 @@ from django.urls import path
 
 from . import views
 
-app_name = 'polls'
+app1_urls = [    path('polls/', views.results, name='results'),]
+app2_urls = [    path('details/', views.detail, name='detail'),]
+
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
     path('<int:pk>/', views.DetailView.as_view(), name='detail'),
