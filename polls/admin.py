@@ -1,7 +1,6 @@
 from django.contrib import admin
 
 from .models import Choice, Question
-from .models import Question
 
 
 class ChoiceInline(admin.TabularInline):
