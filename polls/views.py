@@ -1,13 +1,16 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.views.generic import TemplateView
 from .models import Question
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
 from .models import Choice, Question
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
-class IndexView(generic.ListView):
+@csrf_exempt
+class IndexView(TemplateView):
     template_name = "polls/index.html"
     context_object_name = "latest_question_list"
 
