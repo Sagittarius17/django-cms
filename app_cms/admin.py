@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Article
+from .models import *
 # Register your models here.
 
 # @admin.register(Article)
@@ -7,3 +7,4 @@ from .models import Article
 #     list_display = ('title', 'published_date', 'updated_date')
 
 admin.site.register(Article)
+admin.site.register(SimpleUser)

@@ -5,7 +5,7 @@
       <div class="relative flex items-center justify-between h-14">
         <!-- Logo -->
         <div class="flex-shrink-0 flex items-center">
-          <a href="{% url 'store' %}" class=" font-bold text-lg">StorE</a>
+          <a href="" class="font-bold text-lg">CMS</a>
         </div>
         <!-- Menu button -->
         <div class="absolute inset-y-0 right-0 flex items-center sm:hidden">
@@ -22,25 +22,25 @@
         <!-- Desktop menu -->
         <div class="hidden sm:block sm:ml-6">
           <div class="flex space-x-0">
-            <a href="{% url 'cart' %}" class="flex h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
-                <span class=''>Cart</span>
-                <img class="relative w-6 h-6 ml-1" src="{% static 'images/shoppingcart.png' %}">
-                <p class='relative bottom-2 right-1 text-sm bg-slate-700 w-5 h-5 text-center rounded-full'>{{cartItems}}</p>
+            <a href="{% url 'register' %}" class="flex h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
+                <span class=''>Register</span>
+                {% comment %} <img class="relative w-6 h-6 ml-1" src="{% static 'images/shoppingcart.png' %}"> {% endcomment %}
+                {% comment %} <p class='relative bottom-2 right-1 text-sm bg-slate-700 w-5 h-5 text-center rounded-full'></p> {% endcomment %}
             </a>
             <a href="{% url 'login' %}" id='login_btn' class="flex h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
-                <img class="relative w-5 h-5 mr-1" src="{% static 'images/login.png' %}" alt="Login?">
+                {% comment %} <img class="relative w-5 h-5 mr-1" src="{% static 'images/login.png' %}" alt="Login?"> {% endcomment %}
                 <span>Login</span>
             </a>
-            <a href="#" id='user_profile' class="flex h-14 items-center hover:bg-gray-600 transition duration-300 pl-2 py-1 text-lg font-medium">
+            {% comment %} <a href="#" id='user_profile' class="flex h-14 items-center hover:bg-gray-600 transition duration-300 pl-2 py-1 text-lg font-medium">
                 <img class="relative w-5 h-5 mr-1" src="{% static 'images/loggedin.png' %}" alt="Logged in!">
-                <span class='ml-1 pr-2'>{{request.user.customer}}</span>
-            </a>
+                <span class='ml-1 pr-2'></span>
+            </a> {% endcomment %}
           </div>
         </div>
         <!-- Mobile menu (hidden by default) -->
         <div id="mobile-menu" class="sm:hidden absolute top-16 right-0 w-48 bg-gray-800 border rounded-md shadow-lg">
-            <a href="{% url 'login' %}" class="block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"><strong>Login</strong></a>
-            <a href="{% url 'cart' %}" class="block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"><strong>Cart</strong>{{cartItems}}</a>
+            <a href="" class="block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"><strong>Login</strong></a>
+            <a href="" class="block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"><strong>Cart</strong>{{cartItems}}</a>
         </div>
       </div>
     </div>

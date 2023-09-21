@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+    <div class="container mx-auto px-6 py-8">
+        {% for article in articles %}
+        <a href="{% url 'article_detail' article.id %}">
+            <div class="flex flex-row gap-10 items-center bg-white text-black shadow-lg rounded-lg px-4 py-2 mb-6">
+                <span>{{ article.id }}</span>
+                <img src="{{ article.imageURL }}" alt="{{ article.title }}" class="w-10 h-10 object-cover object-center rounded-t-lg">
+                <h2 class="text-xl ">{{ article.title }}</h2>
+                <p class="text-xl ">Author: {{ article.author }}</p>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

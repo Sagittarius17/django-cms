@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form action="{% url 'login' %}" method="post" class="flex w-1/2 flex-col bg-gray-900 items-center justify-center p-16 pb-24">
+        {% csrf_token %}
+        {% comment %} <h2 class="flex text-white w-full justify-center text-2xl mb-6 items-center">Login</h2> {% endcomment %}
+        <div>
+            <h2 class="text-center text-3xl font-extrabold text-white">
+                Sign in to your account
+            </h2>
+            <p class="mt-2 mb-6 text-center text-sm text-white">
+                Or <a href="{% url 'register' %}" class="font-medium text-blue-600 hover:text-blue-500">
+                create a new account
+                </a>
+            </p>
+        </div>
+        <div class="flex flex-col text-black w-2/3">
+            {% comment %} <label for="username">Username:</label> {% endcomment %}
+            <input type="text" name="username" class="h-10 mb-2 p-2 rounded-md" placeholder="Username" required>
+            
+            {% comment %} <label for="password">Password:</label> {% endcomment %}
+            <input type="password" name="password" class="h-10 mb-2 p-2 rounded-md" placeholder="Password" required>
+            
+            <button type="submit" class="bg-purple-500 h-10 rounded-md">Login</button>
+        </div>
+    </form>
+{% endblock %}
