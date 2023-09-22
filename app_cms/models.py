@@ -6,7 +6,7 @@ class Article(models.Model):
     title = models.CharField(max_length=200)
     author = models.CharField(max_length=200)
     content = models.TextField()
-    image = models.ImageField(null=True, blank=True)
+    image = models.ImageField(upload_to='article_imgs/', null=True, blank=True)
     published_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
@@ -22,6 +22,7 @@ class Article(models.Model):
         return url
     
 class SimpleUser(models.Model):
+    profile_pic = models.ImageField(upload_to='profile_imgs/', null=True, blank=True)
     username = models.CharField(max_length=150, unique=True)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=200)
@@ -30,3 +31,11 @@ class SimpleUser(models.Model):
 
     def __str__(self):
         return self.username
+    
+    @property
+    def profilePic(self):
+        try:
+            url = self.image.url
+        except:
+            url = ''
+        return url

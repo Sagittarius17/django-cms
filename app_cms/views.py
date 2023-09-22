@@ -1,5 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
 from django.contrib.auth.hashers import make_password, check_password
 
@@ -53,11 +53,18 @@ def logout_view(request):
     logout(request)
     return redirect('login')
 
+def profile_view(request, pk):
+    profile = get_object_or_404(SimpleUser, id=request.user.id)
+    # profiles = SimpleUser.objects.all(request, pk=pk)
+    context = {'profile': profile, 'profiles': profiles}
+    return render(request, 'app_cms/profile.html', context)
 
 def article_list(request):
     articles = Article.objects.all()
-    return render(request, 'app_cms/article_list.html', {'articles': articles})
+    context = {'articles': articles,}
+    return render(request, 'app_cms/article_list.html', context)
 
 def article_detail(request, pk):
     article = Article.objects.get(pk=pk)
-    return render(request, 'app_cms/article_detail.html', {'article': article})
+    context = {'article': article}
+    return render(request, 'app_cms/article_detail.html', context)

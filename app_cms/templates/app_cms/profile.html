@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+<div class="container mx-auto px-6 py-8">
+    <div class="bg-white text-black shadow-lg rounded-lg px-4 py-6 mb-6">
+        <img class="relative w-5 h-5 mr-1" src="{{ profile.profilePic }}" alt="Logged in!">
+        <h2 class="text-2xl font-bold mb-2">{{ profile.username }}</h2>
+        <p class="mb-3">Email: {{ profile.email }}</p>
+        <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+        <!-- You can add more user details here if needed -->
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+
+
