@@ -1,36 +1,27 @@
-from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from .models import *
 from django.contrib.auth.hashers import make_password, check_password
+from django.views.decorators.csrf import csrf_exempt
 
-def index_view(request):
-    return render ( request , 'base.html' )
+# def index_view(request):
+#     return render ( request , 'base.html' )
 
+@csrf_exempt
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-
+        
         try:
             user = SimpleUser.objects.get(username=username)
-            
-            if check_password(password, user.password):
-                # You need to set up your own login logic if you're not using Django's built-in User model
-                # For now, I'm leaving it as a comment, but you might want to implement sessions or some other way.
-                # login(request, user)
-                return redirect('article_list')  # or wherever you want to redirect after login
-            else:
-                # Password does not match
-                pass
+            if check_password(password, user.password):  # Assuming you're using Django's check_password
+                request.session['user_id'] = user.id  # Set user id in session
+                return redirect('article_list')
         except SimpleUser.DoesNotExist:
-            # Username does not exist
             pass
-        
-        # handle error, e.g., show a message to the user
-        # You might want to add an error message here to inform the user
-
     return render(request, 'app_cms/login.html')
 
+@csrf_exempt
 def register_view(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -50,20 +41,27 @@ def register_view(request):
     return render(request, 'app_cms/register.html')
 
 def logout_view(request):
-    logout(request)
+    if 'user_id' in request.session:
+        del request.session['user_id']
     return redirect('login')
 
-def profile_view(request, pk):
-    profile = get_object_or_404(SimpleUser, id=request.user.id)
-    # profiles = SimpleUser.objects.all(request, pk=pk)
-    context = {'profile': profile, 'profiles': profiles}
-    return render(request, 'app_cms/profile.html', context)
+@csrf_exempt
+def profile_view(request):
+    user_id = request.session.get('user_id')
+    if user_id:
+        profile = SimpleUser.objects.get(id=user_id)
+        context = {'profile': profile}
+        return render(request, 'app_cms/profile.html', context)
+    else:
+        return redirect('login')
 
+@csrf_exempt
 def article_list(request):
     articles = Article.objects.all()
     context = {'articles': articles,}
     return render(request, 'app_cms/article_list.html', context)
 
+@csrf_exempt
 def article_detail(request, pk):
     article = Article.objects.get(pk=pk)
     context = {'article': article}
