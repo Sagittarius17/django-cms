@@ -5,6 +5,7 @@ urlpatterns = [
     # path('', views.index_view, name='index'),
     path('', views.article_list, name='article_list'),
     path('<int:pk>/', views.article_detail, name='article_detail'),
+    path('new/article/', views.new_article, name='new_article'),
     
     path('profile/', views.profile_view, name='profile'),
     path('update_profile/', views.UpdateProfileView.as_view(), name='update_profile'),
