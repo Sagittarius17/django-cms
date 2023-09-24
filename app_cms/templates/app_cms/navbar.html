@@ -1,11 +1,11 @@
 {% load static %}
 <!-- Navigation bar -->
-<nav class="bg-slate-500 text-white fixed top-0 w-full">
+<nav class="z-10 bg-slate-500 text-white fixed top-0 w-full">
     <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
       <div class="relative flex items-center justify-between h-14">
         <!-- Logo -->
         <div class="flex-shrink-0 flex items-center">
-          <a href="" class="font-bold text-lg">CMS</a>
+          <a href="{% url 'article_list' %}" class="font-bold text-lg">CMS</a>
         </div>
         <!-- Menu button -->
         <div class="absolute inset-y-0 right-0 flex items-center sm:hidden">
@@ -22,7 +22,7 @@
         <!-- Desktop menu -->
         <div class="hidden sm:block sm:ml-6">
           <div class="flex space-x-0">
-            <a href="{% url 'register' %}" class="flex h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
+            <a href="{% url 'register' %}" id="register_btn" class="flex h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
                 <span class=''>Register</span>
                 {% comment %} <img class="relative w-6 h-6 ml-1" src="{% static 'images/shoppingcart.png' %}"> {% endcomment %}
                 {% comment %} <p class='relative bottom-2 right-1 text-sm bg-slate-700 w-5 h-5 text-center rounded-full'></p> {% endcomment %}
@@ -31,7 +31,7 @@
                 {% comment %} <img class="relative w-5 h-5 mr-1" src="{% static 'images/login.png' %}" alt="Login?"> {% endcomment %}
                 <span>Login</span>
             </a>
-            <a href="{% url 'profile' %}" id='user_profile' class="flex h-14 items-center hover:bg-gray-600 transition duration-300 pl-2 py-1 text-lg font-medium">
+            <a href="{% url 'profile' %}" id='user_profile' class="hidden flex h-14 items-center hover:bg-gray-600 transition duration-300 pl-2 py-1 text-lg font-medium">
                 {% comment %} <img class="relative w-5 h-5 mr-1" src="{% static 'images/loggedin.png' %}" alt="Logged in!"> {% endcomment %}
                 <span class='ml-1 pr-2'>{{ profile.username }}</span>
             </a>
@@ -45,3 +45,22 @@
       </div>
     </div>
 </nav>
+
+<script>
+    const isAuthenticated = {{ is_authenticated|lower }};
+    const userProfile = document.getElementById('user_profile');
+    const loginBtn = document.getElementById('login_btn');
+    const registerBtn = document.getElementById('register_btn');
+
+    if (isAuthenticated) {
+        // If the user is authenticated, show the user profile and hide the login/register buttons.
+        userProfile.style.display = "flex";
+        loginBtn.style.display = "none";
+        registerBtn.style.display = "none";
+    } else {
+        // If the user is not authenticated, hide the user profile and show the login/register buttons.
+        // userProfile.style.display = "none";
+        loginBtn.style.display = "block";
+        registerBtn.style.display = "block";
+    }
+</script>

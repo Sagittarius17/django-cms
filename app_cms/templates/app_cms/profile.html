@@ -1,18 +1,72 @@
 {% extends "base.html" %}
 
 {% block content %}
-<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-
-<div class="container mx-auto px-6 py-8">
-    <div class="bg-white text-black shadow-lg rounded-lg px-4 py-6 mb-6">
-        <img class="relative w-5 h-5 mr-1" src="{{ profile.profilePic }}" alt="Logged in!">
-        <h2 class="text-2xl font-bold mb-2">{{ profile.username }}</h2>
-        <p class="mb-3">Email: {{ profile.email }}</p>
-        <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
-        <!-- You can add more user details here if needed -->
+    <div class="w-[40%] mx-auto px-6 py-8">
+        <div class="flex flex-col justify-center items-center bg-white text-black shadow-lg rounded-lg px-4 py-6 mb-6">
+            <img class="relative w-40 h-40 mb-20" src="{{ profile.profilePic }}" alt="Logged in!">
+            <div class="flex flex-row w-full mb-2">
+                <label class="flex flex-start w-full border-2 border-solid border-purple-500 rounded-md mr-1 p-1">Name</label>
+                <div contenteditable="true" class="w-full border-2 border-solid border-purple-500 rounded-md font-bold text-pink-300 p-1 editable-field" data-field="username">{{ profile.username }}</div>
+                <input type="hidden" id="original-username" value="{{ profile.username }}">
+            </div>
+            <div class="flex flex-row w-full mb-2">
+                <label class="flex flex-start w-full border-2 border-solid border-purple-500 rounded-md mr-1 p-1">Email</label>
+                <div contenteditable="true" class="w-full border-2 border-solid border-purple-500 rounded-md p-1 font-bold text-pink-400 editable-field" data-field="email">{{ profile.email }}</div>
+                <input type="hidden" id="original-email" value="{{ profile.email }}">
+            </div>
+            <div class="flex flex-row w-full mb-6">
+                <label class="flex flex-start w-full border-2 border-solid border-purple-500 rounded-md mr-1 p-1">Phone number</label>
+                <div contenteditable="true" class="w-full border-2 border-solid border-purple-500 rounded-md p-1 font-bold text-pink-500 editable-field" data-field="phn_num">{{ profile.phn_num }}</div>
+                <input type="hidden" id="original-phn_num" value="{{ profile.phn_num }}">
+            </div>
+            <button id="save-button" class="hidden flex w-full h-8 bg-blue-500 hover:bg-blue-600 items-center justify-center mb-2 py-2 rounded">Save</button>
+            <a href="{% url 'logout' %}" class="flex w-full h-8 bg-yellow-300 items-center justify-center rounded">Logout</a>
+        </div>
     </div>
-</div>
 
+    <script>
+        const editables = document.querySelectorAll('.editable-field');
+        const saveButton = document.getElementById('save-button');
+
+        editables.forEach(editable => {
+            editable.addEventListener('input', () => {
+                const originalValue = document.getElementById('original-' + editable.dataset.field).value;
+                if (editable.textContent !== originalValue) {
+                    saveButton.classList.remove('hidden');
+                }
+            });
+        });
+
+
+        saveButton.addEventListener('click', () => {
+            const data = {
+                username: document.querySelector('[data-field="username"]').textContent,
+                email: document.querySelector('[data-field="email"]').textContent,
+                phn_num: document.querySelector('[data-field="phn_num"]').textContent,
+            };
+            // Use the `data` object to send a request to the server to save changes
+            // You'd typically make an AJAX call here
+            fetch('/update_profile/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // You might need to add the CSRF token header here
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert(data.message);
+                    // Optionally hide the save button again
+                    saveButton.classList.add('hidden');
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            });
+        });
+        
+    </script>
 {% endblock %}
 
 

@@ -2,6 +2,10 @@ from django.shortcuts import render, redirect
 from .models import *
 from django.contrib.auth.hashers import make_password, check_password
 from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from django.http import JsonResponse
+from django.views import View
+import json
 
 # def index_view(request):
 #     return render ( request , 'base.html' )
@@ -26,6 +30,7 @@ def register_view(request):
     if request.method == 'POST':
         username = request.POST['username']
         email = request.POST['email']
+        phn_num = request.POST['phn_num']
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
         
@@ -33,7 +38,7 @@ def register_view(request):
             # IMPORTANT: Always hash the password before storing!
             hashed_password = make_password(password)
             
-            user = SimpleUser(username=username, email=email, password=hashed_password)
+            user = SimpleUser(username=username, email=email, phn_num=phn_num, password=hashed_password)
             user.save()
             return redirect('login')
         else:
@@ -50,19 +55,60 @@ def profile_view(request):
     user_id = request.session.get('user_id')
     if user_id:
         profile = SimpleUser.objects.get(id=user_id)
-        context = {'profile': profile}
+        context = {
+            'is_authenticated': request.user.is_authenticated,
+            'profile': profile
+            }
         return render(request, 'app_cms/profile.html', context)
     else:
         return redirect('login')
+    
+@method_decorator(csrf_exempt, name='dispatch')
+class UpdateProfileView(View):
+    def post(self, request, *args, **kwargs):
+        try:
+            data = json.loads(request.body)
+            user_id = request.session.get('user_id')
+
+            if not user_id:
+                return JsonResponse({'status': 'error', 'message': 'Not authenticated'}, status=401)
+
+            user = SimpleUser.objects.get(pk=user_id)
+
+            # Update the fields
+            user.username = data.get('username', user.username)
+            user.email = data.get('email', user.email)
+            user.phn_num = data.get('phn_num', user.phn_num)
+            
+            # ... update any other fields you want ...
+
+            user.save()
+            return JsonResponse({'status': 'success', 'message': 'Profile updated successfully'})
+        
+        except SimpleUser.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'User not found'}, status=404)
+        
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': f"Error: {str(e)}"}, status=500)
 
 @csrf_exempt
 def article_list(request):
     articles = Article.objects.all()
-    context = {'articles': articles,}
+    user_id = request.session.get('user_id')
+    profile = SimpleUser.objects.get(id=user_id)
+    context = {
+        'is_authenticated': request.user.is_authenticated,
+        'articles': articles, 'profile': profile
+        }
     return render(request, 'app_cms/article_list.html', context)
 
 @csrf_exempt
 def article_detail(request, pk):
     article = Article.objects.get(pk=pk)
-    context = {'article': article}
+    user_id = request.session.get('user_id')
+    profile = SimpleUser.objects.get(id=user_id)
+    context = {
+        'is_authenticated': request.user.is_authenticated,
+        'article': article, 'profile': profile
+        }
     return render(request, 'app_cms/article_detail.html', context)
