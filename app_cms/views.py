@@ -93,14 +93,22 @@ class UpdateProfileView(View):
             return JsonResponse({'status': 'error', 'message': f"Error: {str(e)}"}, status=500)
 
 def new_article(request):
+    user_id = request.session.get('user_id')
+    profile = SimpleUser.objects.get(id=user_id)
+    context = {
+        'is_authenticated': request.user.is_authenticated,
+        'profile': profile
+        }
     if request.method == 'POST':
         title = request.POST['title']
         content = request.POST['content']
         image = request.FILES['image']
-        author = request.user  # assuming you're using Django's authentication
+        author = request.POST['author']
+        if author == '':
+            author = profile.username
         
         # Save the uploaded image
-        fs = FileSystemStorage()
+        fs = FileSystemStorage(location='static/images/')
         filename = fs.save(image.name, image)
         uploaded_file_url = fs.url(filename)
 
@@ -109,19 +117,19 @@ def new_article(request):
         article.save()
         return redirect('article_list')
 
-    user_id = request.session.get('user_id')
-    profile = SimpleUser.objects.get(id=user_id)
-    context = {
-        'is_authenticated': request.user.is_authenticated,
-        'profile': profile
-        }
+    
     return render(request, 'app_cms/new_article.html', context)
 
 @csrf_exempt
 def article_list(request):
-    articles = Article.objects.all()
+    # articles = Article.objects.all()
+    articles = Article.objects.all().order_by('-published_date') # '-' indicates descending order
     user_id = request.session.get('user_id')
-    profile = SimpleUser.objects.get(id=user_id)
+    try:
+        profile = SimpleUser.objects.get(id=user_id)
+    except SimpleUser.DoesNotExist:
+        profile = None
+        return render(request, 'app_cms/article_list.html')
     context = {
         'is_authenticated': request.user.is_authenticated,
         'articles': articles, 'profile': profile
