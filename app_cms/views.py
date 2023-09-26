@@ -91,6 +91,29 @@ class UpdateProfileView(View):
         
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': f"Error: {str(e)}"}, status=500)
+        
+def upload_profile_picture(request):
+    if request.method == 'POST' and request.FILES['profile_pic']:
+        profile_pic = request.FILES['profile_pic']
+        user_id = request.session.get('user_id')
+        print(user_id)
+        
+        # Fetch the user instance using the user_id
+        user = SimpleUser.objects.get(pk=user_id)
+
+        # Save the uploaded image
+        fs = FileSystemStorage(location='static/images/')
+        filename = fs.save(profile_pic.name, profile_pic)
+        uploaded_file_url = fs.url(filename)
+
+        # Update the user's profile picture
+        user.profile_pic = uploaded_file_url
+        user.save()
+
+        return redirect('profile') 
+
+    # return to profile page with some error message if needed
+    return redirect('profile')
 
 def new_article(request):
     user_id = request.session.get('user_id')

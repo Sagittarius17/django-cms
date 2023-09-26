@@ -86,6 +86,17 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'cms',
+#         'USER': 'shuvendu17',
+#         'PASSWORD': 'shuvendu17',
+#         'HOST': 'localhost',
+#         'PORT': '5432'
+#     }
+# }
+
 INTERNAL_IPS = [
     # ...
     "127.0.0.1",

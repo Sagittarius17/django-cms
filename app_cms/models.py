@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
     
 class SimpleUser(models.Model):
-    profile_pic = models.ImageField(upload_to='profile_imgs/', null=True, blank=True)
+    profile_pic = models.ImageField(null=True, blank=True) # upload_to='profile_imgs/'
     username = models.CharField(max_length=150, unique=True)
     email = models.EmailField(unique=True)
     phn_num = models.IntegerField(null=True, blank=True)
