@@ -2,47 +2,54 @@
 <!-- Navigation bar -->
 <nav class="z-10 bg-slate-500 text-white fixed top-0 w-full">
     <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
-      <div class="relative flex items-center justify-between h-14">
-        <!-- Logo -->
-        <div class="flex-shrink-0 flex items-center">
-          <a href="{% url 'article_list' %}" class="font-bold text-lg">CMS</a>
+        <div class="relative flex items-center justify-between h-14">
+            <!-- Logo -->
+            <div class="flex-shrink-0 flex items-center">
+                <a href="{% url 'article_list' %}" class="font-bold text-lg">CMS</a>
+            </div>
+            <!-- Menu button -->
+            <div class="absolute inset-y-0 right-0 flex items-center sm:hidden">
+                <button id="menu-toggle" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                    <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <!-- Desktop menu -->
+            <div class="hidden sm:block sm:ml-6">
+                <div class="flex flex-row">
+                    <div class="flex space-x-0">
+                        <a href="{% url 'register' %}" id="register_btn" class="flex h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
+                            <span class=''>Register</span>
+                            {% comment %} <img class="relative w-6 h-6 ml-1" src="{% static 'images/shoppingcart.png' %}"> {% endcomment %}
+                            {% comment %} <p class='relative bottom-2 right-1 text-sm bg-slate-700 w-5 h-5 text-center rounded-full'></p> {% endcomment %}
+                        </a>
+                        <a href="{% url 'login' %}" id='login_btn' class="flex h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
+                            {% comment %} <img class="relative w-5 h-5 mr-1" src="{% static 'images/login.png' %}" alt="Login?"> {% endcomment %}
+                            <span>Login</span>
+                        </a>
+                        <a href="{% url 'profile' %}" id='user_profile' class="hidden flex h-14 items-center hover:bg-gray-600 transition duration-300 pl-2 py-1 text-lg font-medium">
+                            <img class="relative border border-solid rounded-full w-10 h-10 mr-1" src="{{ profile.profilePic }}" alt="Logged in!">
+                            <span id="username" class='ml-1 pr-2'>{{ profile.username }}</span>
+                        </a>
+                    </div>
+                    <div id='logout_btn' class="hidden flex relative left-[43%] justify-center items-center">
+                        <a href="{% url 'logout' %}" class="flex h-full bg-black items-center hover:bg-gray-600 transition duration-300">
+                            <img class="w-8 h-8" src="{% static 'images/logout.png' %}">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- Mobile menu (hidden by default) -->
+            <div id="mobile-menu" class="sm:hidden absolute top-16 right-0 w-48 bg-gray-800 border rounded-md shadow-lg">
+                <a href="" class="block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"><strong>Login</strong></a>
+                <a href="" class="block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"><strong>Cart</strong>{{cartItems}}</a>
+            </div>
         </div>
-        <!-- Menu button -->
-        <div class="absolute inset-y-0 right-0 flex items-center sm:hidden">
-          <button id="menu-toggle" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
-            <span class="sr-only">Open main menu</span>
-            <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-            <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-        <!-- Desktop menu -->
-        <div class="hidden sm:block sm:ml-6">
-          <div class="flex space-x-0">
-            <a href="{% url 'register' %}" id="register_btn" class="flex h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
-                <span class=''>Register</span>
-                {% comment %} <img class="relative w-6 h-6 ml-1" src="{% static 'images/shoppingcart.png' %}"> {% endcomment %}
-                {% comment %} <p class='relative bottom-2 right-1 text-sm bg-slate-700 w-5 h-5 text-center rounded-full'></p> {% endcomment %}
-            </a>
-            <a href="{% url 'login' %}" id='login_btn' class="flex h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
-                {% comment %} <img class="relative w-5 h-5 mr-1" src="{% static 'images/login.png' %}" alt="Login?"> {% endcomment %}
-                <span>Login</span>
-            </a>
-            <a href="{% url 'profile' %}" id='user_profile' class="hidden flex h-14 items-center hover:bg-gray-600 transition duration-300 pl-2 py-1 text-lg font-medium">
-                {% comment %} <img class="relative w-5 h-5 mr-1" src="{% static 'images/loggedin.png' %}" alt="Logged in!"> {% endcomment %}
-                <span id="username" class='ml-1 pr-2'>{{ profile.username }}</span>
-            </a>
-          </div>
-        </div>
-        <!-- Mobile menu (hidden by default) -->
-        <div id="mobile-menu" class="sm:hidden absolute top-16 right-0 w-48 bg-gray-800 border rounded-md shadow-lg">
-            <a href="" class="block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"><strong>Login</strong></a>
-            <a href="" class="block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"><strong>Cart</strong>{{cartItems}}</a>
-        </div>
-      </div>
     </div>
 </nav>
 
@@ -50,11 +57,13 @@
     const isAuthenticated = {{ is_authenticated|lower }};
     const userProfile = document.getElementById('user_profile');
     const loginBtn = document.getElementById('login_btn');
+    const logoutBtn = document.getElementById('logout_btn');
     const registerBtn = document.getElementById('register_btn');
 
     if (isAuthenticated) {
         // If the user is authenticated, show the user profile and hide the login/register buttons.
         userProfile.style.display = "flex";
+        logoutBtn.style.display = "flex"
         loginBtn.style.display = "none";
         registerBtn.style.display = "none";
     } else {
