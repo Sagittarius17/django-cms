@@ -1,39 +1,41 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="w-[40%] mx-auto px-6 py-8">
-        <div class="flex flex-col justify-center items-center bg-white text-black shadow-lg rounded-lg px-4 py-6 mb-6">
+    <div class="w-full sm:w-[60%] lg:w-[40%] mx-auto px-4 sm:px-6 py-8">
+        <div class="flex flex-col w-full justify-center items-center bg-white text-black shadow-lg rounded-lg px-4 py-6 mb-6">
             <div class="relative mb-10">
-                <img class="w-40 h-40 rounded-full bg-gray-600" src="{{ profile.profilePic }}" alt="{{ profile.username }}">
+                <img class="w-32 sm:w-40 h-32 sm:h-40 rounded-full bg-gray-600" src="{{ profile.profilePic }}" alt="{{ profile.username }}">
                 <form method="post" enctype="multipart/form-data" action="{% url 'upload_profile_picture' %}" class="absolute bottom-0 text-center w-full">
                     {% csrf_token %}
                     <input type="file" name="profile_pic" id="fileInput" class="hidden">
                     <label for="fileInput" class="cursor-pointer">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 bg-white w-full opacity-80 mx-auto hover:text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 sm:h-6 w-5 sm:w-6 bg-white w-full opacity-80 mx-auto hover:text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                         </svg>
                     </label>
                 </form>
             </div>
-            <div class="flex flex-row w-full mb-2">
-                <label class="flex flex-start w-full border-2 border-solid border-purple-500 rounded-md mr-1 p-1">Name</label>
+            <div class="flex flex-col sm:flex-row w-full mb-2">
+                <label class="flex flex-start w-full sm:w-full border-2 border-solid border-purple-500 rounded-md mr-1 p-1 mb-2 sm:mb-0 sm:mr-2">Name</label>
                 <div contenteditable="true" class="w-full border-2 border-solid border-purple-500 rounded-md font-bold text-black p-1 editable-field" data-field="username">{{ profile.username }}</div>
                 <input type="hidden" id="original-username" value="{{ profile.username }}">
             </div>
-            <div class="flex flex-row w-full mb-2">
-                <label class="flex flex-start w-full border-2 border-solid border-purple-500 rounded-md mr-1 p-1">Email</label>
+            <div class="flex flex-col sm:flex-row w-full mb-2">
+                <label class="flex flex-start w-full sm:w-full border-2 border-solid border-purple-500 rounded-md mr-1 p-1 mb-2 sm:mb-0 sm:mr-2">Email</label>
                 <div contenteditable="true" class="w-full border-2 border-solid border-purple-500 rounded-md p-1 font-bold text-black editable-field" data-field="email">{{ profile.email }}</div>
                 <input type="hidden" id="original-email" value="{{ profile.email }}">
             </div>
-            <div class="flex flex-row w-full mb-6">
-                <label class="flex flex-start w-full border-2 border-solid border-purple-500 rounded-md mr-1 p-1">Phone number</label>
+            <div class="flex flex-col sm:flex-row w-full mb-6">
+                <label class="flex flex-start w-full sm:w-full border-2 border-solid border-purple-500 rounded-md mr-1 p-1 mb-2 sm:mb-0 sm:mr-2">Phone number</label>
                 <div contenteditable="true" class="w-full border-2 border-solid border-purple-500 rounded-md p-1 font-bold text-black editable-field" data-field="phn_num">{{ profile.phn_num }}</div>
                 <input type="hidden" id="original-phn_num" value="{{ profile.phn_num }}">
             </div>
             <button id="save-button" class="hidden flex w-full h-8 bg-blue-500 hover:bg-blue-600 items-center justify-center mb-2 py-2 rounded">Save</button>
-            {% comment %} <a href="{% url 'logout' %}" class="flex w-full h-8 bg-yellow-300 items-center justify-center rounded">Logout</a> {% endcomment %}
+            <!-- Uncomment the following line if you want the logout button. -->
+            <!-- <a href="{% url 'logout' %}" class="flex w-full h-8 bg-yellow-300 items-center justify-center rounded">Logout</a> -->
         </div>
     </div>
+
 
     <script>
         const editables = document.querySelectorAll('.editable-field');

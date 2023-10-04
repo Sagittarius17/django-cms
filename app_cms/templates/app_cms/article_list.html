@@ -1,23 +1,26 @@
 {% extends "base.html" %}
+{% load static %}
+{% block title %} CMS | Article list {% endblock %}
 
 {% block content %}
     <div class="flex flex-col w-full">
-        <div class="container mx-auto px-6 py-8">
+        <div class="container mx-auto px-4 sm:px-6 py-8">
             {% for article in articles %}
                 <a href="{% url 'article_detail' article.id %}">
-                <div class="flex flex-row gap-10 items-center bg-white text-black shadow-lg rounded-lg px-4 py-2 mb-6">
-                    <span>{{ forloop.counter }}</span>
-                    <img src="{{ article.imageURL }}" alt="{{ article.title }}" class="w-10 h-10 object-cover object-center rounded-lg">
-                    <h2 class="text-md">{{ article.title }}</h2>
-                    <p class="text-md ">Author: {{ article.author }}</p>
-                    <p class="text-md ">Published date: {{ article.published_date }}</p>
-                </div>
+                    <div class="flex flex-col sm:flex-row gap-4 sm:gap-10 items-center bg-white text-black shadow-lg rounded-lg p-4 sm:py-2 mb-6">
+                        <span class="text-xl sm:text-2xl mb-2 sm:mb-0">{{ forloop.counter }}</span>
+                        <img src="{{ article.imageURL }}" alt="{{ article.title }}" class="w-24 h-24 sm:w-10 sm:h-10 object-cover object-center rounded-lg mb-2 sm:mb-0">
+                        <h2 class="text-lg sm:text-md w-full sm:w-auto">{{ article.title }}</h2>
+                        <p class="text-sm sm:text-md mb-2 sm:mb-0">Author: {{ article.author }}</p>
+                        <p class="text-sm sm:text-md">Published date: {{ article.published_date }}</p>
+                    </div>
+                </a>
             {% endfor %}
         </div>
-        <a href="{% url 'new_article' %}">
-        <div class="flex fixed bottom-[10%] left-[91%] justify-center items-center w-20 h-20 rounded-full bg-purple-300">
-            <div class="absolute w-12 h-2 bg-white transform translate-x-[-4%] rounded top-[48%]"></div>
-            <div class="absolute w-2 h-12 bg-white transform translate-y-[-50%] rounded left-[44%] top-[53%]"></div>
-        </div>
+        <a href="{% url 'new_article' %}" class="flex fixed bottom-6 left-6 sm:bottom-[10%] sm:left-[91%] justify-center items-center w-16 h-16 sm:w-20 sm:h-20 rounded">
+            <img class="w-15 h-15" src="{% static 'images/create-new.png' %}" title="Create new article!">
+            {% comment %} <div class="absolute w-8 h-1 sm:w-12 sm:h-2 bg-white transform translate-x-[-50%] rounded top-[48%]"></div>
+            <div class="absolute w-1 h-8 sm:w-2 sm:h-12 bg-white transform translate-x-[-50%] translate-y-[-50%] rounded left-[50%] top-[50%]"></div> {% endcomment %}
+        </a>
     </div>
 {% endblock %}
