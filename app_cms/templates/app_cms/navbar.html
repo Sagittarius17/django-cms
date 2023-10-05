@@ -15,7 +15,7 @@
                 </a>
             </div>
             <!-- Desktop menu -->
-            <div class="hidden sm:block sm:ml-6">
+            <div class="hidden fixed sm:right-[10%] sm:block sm:ml-6">
                 <div class="flex flex-row">
                     <div class="flex space-x-0">
                         <a href="{% url 'register' %}" id="register_btn" class="flex h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
@@ -27,9 +27,9 @@
                             {% comment %} <img class="relative w-5 h-5 mr-1" src="{% static 'images/login.png' %}" alt="Login?"> {% endcomment %}
                             <span>Login</span>
                         </a>
-                        <a href="{% url 'profile' %}" id='user_profile' class="flex h-14 items-center hover:bg-gray-600 transition duration-300 pl-2 py-1 text-lg font-medium">
-                            <img class="relative border border-solid rounded-full w-10 h-10 mr-1" src="{{ profile.profilePic }}" alt="Logged in!">
-                            <span id="username" class='ml-1 pr-2'>{{ profile.username }}</span>
+                        <a href="{% url 'profile' %}" id='user_profile' class="flex h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
+                            <img class="relative border border-solid rounded-full w-10 h-10" src="{{ profile.profilePic }}" alt="Logged in!">
+                            <span id="username" class='ml-1 pr-2 text-lg font-medium'>{{ profile.username }}</span>
                         </a>
                     </div>
                     <div id='logout_btn' class="hidden fixed right-[0.5%] top-0 h-14">
@@ -57,7 +57,6 @@
 
     if (isAuthenticated) {
         // If the user is authenticated, show the user profile and hide the login/register buttons.
-        userProfile.style.display = "flex";
         logoutBtn.style.display = "flex";
         loginBtn.style.display = "none";
         registerBtn.style.display = "none";

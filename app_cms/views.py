@@ -26,6 +26,7 @@ def login_view(request):
             pass
     return render(request, 'app_cms/login.html')
 
+
 @csrf_exempt
 def register_view(request):
     if request.method == 'POST':
@@ -46,10 +47,12 @@ def register_view(request):
             pass
     return render(request, 'app_cms/register.html')
 
+
 def logout_view(request):
     if 'user_id' in request.session:
         del request.session['user_id']
     return redirect('login')
+
 
 @csrf_exempt
 def profile_view(request):
@@ -63,6 +66,7 @@ def profile_view(request):
         return render(request, 'app_cms/profile.html', context)
     else:
         return redirect('login')
+    
     
 @method_decorator(csrf_exempt, name='dispatch')
 class UpdateProfileView(View):
@@ -92,6 +96,7 @@ class UpdateProfileView(View):
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': f"Error: {str(e)}"}, status=500)
         
+        
 def upload_profile_picture(request):
     if request.method == 'POST' and request.FILES['profile_pic']:
         profile_pic = request.FILES['profile_pic']
@@ -102,7 +107,7 @@ def upload_profile_picture(request):
         user = SimpleUser.objects.get(pk=user_id)
 
         # Save the uploaded image
-        fs = FileSystemStorage(location='static/images/')
+        fs = FileSystemStorage(location='static/images')
         filename = fs.save(profile_pic.name, profile_pic)
         uploaded_file_url = fs.url(filename)
 
@@ -114,6 +119,7 @@ def upload_profile_picture(request):
 
     # return to profile page with some error message if needed
     return redirect('profile')
+
 
 def new_article(request):
     user_id = request.session.get('user_id')
@@ -140,8 +146,8 @@ def new_article(request):
         article.save()
         return redirect('article_list')
 
-    
     return render(request, 'app_cms/new_article.html', context)
+
 
 @csrf_exempt
 def article_list(request):
@@ -158,6 +164,7 @@ def article_list(request):
         'articles': articles, 'profile': profile
         }
     return render(request, 'app_cms/article_list.html', context)
+
 
 @csrf_exempt
 def article_detail(request, pk):
