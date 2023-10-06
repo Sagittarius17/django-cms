@@ -19,7 +19,7 @@ def login_view(request):
         
         try:
             user = SimpleUser.objects.get(username=username)
-            if check_password(password, user.password):  # Assuming you're using Django's check_password
+            if check_password(password, user.password):  # using Django's check_password
                 request.session['user_id'] = user.id  # Set user id in session
                 return redirect('article_list')
         except SimpleUser.DoesNotExist:
@@ -164,6 +164,49 @@ def article_list(request):
         'articles': articles, 'profile': profile
         }
     return render(request, 'app_cms/article_list.html', context)
+
+
+def edit_article(request, pk):
+    article = Article.objects.get(pk=pk)
+    user_id = request.session.get('user_id')
+    profile = SimpleUser.objects.get(id=user_id)
+    
+    if request.method == 'POST':
+        # Get the new details from POST data
+        title = request.POST['title']
+        content = request.POST['content']
+        # Add other fields as required
+        
+        # If an image is uploaded, handle it
+        if 'image' in request.FILES:
+            image = request.FILES['image']
+            fs = FileSystemStorage(location='static/images/')
+            filename = fs.save(image.name, image)
+            uploaded_file_url = fs.url(filename)
+            article.image = uploaded_file_url
+
+        # Update article details
+        article.title = title
+        article.content = content
+        # Update other fields as required
+
+        # Save the changes
+        article.save()
+
+        # Redirect to the list or detail view after saving changes
+        return redirect('article_detail', pk=article.pk)
+    context = {
+        'is_authenticated': request.user.is_authenticated,
+        'article': article, 'profile': profile
+        }
+
+    return render(request, 'app_cms/edit_article.html', context)
+
+
+def delete_article(request, pk):
+    article = Article.objects.get(pk=pk)
+    article.delete()
+    return redirect('article_list')
 
 
 @csrf_exempt

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} CMS | Edit article {% endblock %}
+
+{% block content %}
+    <div class="flex flex-col gap-2">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label>Title:</label>
+            <input type="text" name="title" value="{{ article.title }}" required>
+            
+            <label>Content:</label>
+            <textarea name="content" placeholder="Content">{{ article.content }}</textarea>
+            {% comment %} <textarea name="content" required>{{ article.content }}</textarea> {% endcomment %}
+            
+            <label>Image:</label>
+            <input type="file" name="image">
+            <img src="{{ article.imageURL }}" alt="{{ article.title }}" width="200">
+        
+            <button type="submit">Update</button>
+        </form>
+    </div>
+
+    <script>
+        tinymce.triggerSave();
+    </script>
+{% endblock %}

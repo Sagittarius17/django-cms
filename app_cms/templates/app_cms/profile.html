@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% block title %} << {{profile.username}} >> {% endblock %}
 {% block content %}
     <div class="w-full sm:w-[60%] lg:w-[40%] mx-auto px-4 sm:px-6 py-8">
         <div class="flex flex-col w-full justify-center items-center bg-white text-black shadow-lg rounded-lg px-4 py-6 mb-6">
@@ -32,7 +32,7 @@
             </div>
             <button id="save-button" class="hidden flex w-full h-8 bg-blue-500 hover:bg-blue-600 items-center justify-center mb-2 py-2 rounded">Save</button>
             <!-- Uncomment the following line if you want the logout button. -->
-            <!-- <a href="{% url 'logout' %}" class="flex w-full h-8 bg-yellow-300 items-center justify-center rounded">Logout</a> -->
+            <a href="{% url 'logout' %}" class="sm:hidden flex w-full h-8 bg-yellow-300 items-center justify-center rounded">Logout</a>
         </div>
     </div>
 

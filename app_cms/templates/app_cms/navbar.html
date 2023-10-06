@@ -5,13 +5,12 @@
         <div class="relative flex items-center justify-between h-14">
             <!-- Logo -->
             <div class="flex-shrink-0 flex items-center">
-                <a href="{% url 'article_list' %}" class="font-bold text-lg">CMS</a>
+                <a href="{% url 'article_list' %}" class="font-bold text-xl">CMS<span class="font-normal text-sm">by<span class="font-bold text-sm">shuv</span></span></a>
             </div>
             <!-- Menu button -->
-            <div class="absolute inset-y-0 right-0 flex items-center sm:hidden">
-                <a href="{% url 'profile' %}" id='user_profile' class="hidden flex h-14 items-center hover:bg-gray-600 transition duration-300 pl-2 py-1 text-lg font-medium">
-                    <img class="relative border border-solid rounded-full w-10 h-10 mr-1" src="{{ profile.profilePic }}" alt="Logged in!">
-                    {% comment %} <span id="username" class='ml-1 pr-2'>{{ profile.username }}</span> {% endcomment %}
+            <div id='mobile_profile' class="absolute inset-y-0 right-0 flex items-center sm:hidden">
+                <a href="{% url 'profile' %}" class="flex h-14 items-center hover:bg-gray-600 transition duration-300">
+                    <img class="relative border border-solid rounded-full w-10 h-10" src="{{ profile.profilePic }}" alt="Logged in!">
                 </a>
             </div>
             <!-- Desktop menu -->
@@ -27,7 +26,7 @@
                             {% comment %} <img class="relative w-5 h-5 mr-1" src="{% static 'images/login.png' %}" alt="Login?"> {% endcomment %}
                             <span>Login</span>
                         </a>
-                        <a href="{% url 'profile' %}" id='user_profile' class="flex h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
+                        <a href="{% url 'profile' %}" id='user_profile' class="sm:hidden h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
                             <img class="relative border border-solid rounded-full w-10 h-10" src="{{ profile.profilePic }}" alt="Logged in!">
                             <span id="username" class='ml-1 pr-2 text-lg font-medium'>{{ profile.username }}</span>
                         </a>
@@ -51,18 +50,18 @@
 <script>
     const isAuthenticated = {{ is_authenticated|lower }};
     const userProfile = document.getElementById('user_profile');
+    const mobileProfile = document.getElementById('mobile_profile');
     const loginBtn = document.getElementById('login_btn');
     const logoutBtn = document.getElementById('logout_btn');
     const registerBtn = document.getElementById('register_btn');
 
     if (isAuthenticated) {
-        // If the user is authenticated, show the user profile and hide the login/register buttons.
+        userProfile.style.display = "flex";
         logoutBtn.style.display = "flex";
         loginBtn.style.display = "none";
         registerBtn.style.display = "none";
     } else {
-        // If the user is not authenticated, hide the user profile and show the login/register buttons.
-        userProfile.style.display = "none";
+        mobileProfile.style.display = "hidden";
         loginBtn.style.display = "block";
         registerBtn.style.display = "block";
     }
