@@ -10,6 +10,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.tiny.cloud/1/8kahlt9ejvfhlb9hsgeb59fz0w52qa796hhhl9ux4ommz5nq/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 
         {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}"> {% endcomment %}
@@ -18,14 +19,39 @@
     <body class='flex bg-gray-600 text-white justify-center'>
         {% include "app_cms/navbar.html"%}
 
-        <div class="flex flex-col justify-center mt-16 w-full">
-            <a href="{% url 'app_polls:index' %}" class="flex relative justify-center top-0 bg-red-500 w-full">Create a poll?</a>
+        <div id="main_content" class="flex flex-col justify-center mt-14 w-full">
+            {% if request.path == 'article_detail' %}
+                <a href="{% url 'app_polls:index' %}" class="flex relative justify-center bg-red-500 hover:bg-red-900 transition duration-300 w-full z-9">Create a Poll?</a>
+            {% elif request.path == 'app_polls:detail' %}
+                <a href="{% url 'article_list' %}" class="flex relative justify-center bg-red-500 hover:bg-red-900 transition duration-300 w-full z-9">Create an Article?</a>
+            {% endif %}
             {% block content %}
 
             {% endblock %}
         </div>
 
         <script>
+            // JavaScript to handle AJAX page changes
+            document.addEventListener('DOMContentLoaded', () => {
+                const container = document.getElementById('main_content');
+            
+                document.body.addEventListener('click', event => {
+                    if (event.target.matches('[data-link]')) {
+                        event.preventDefault();
+                        
+                        // Fetch the content
+                        fetch(event.target.href)
+                            .then(response => response.text())
+                            .then(data => {
+                                container.innerHTML = data;
+                                history.pushState(null, null, event.target.href);
+                            })
+                            .catch(error => console.error('Error:', error));
+                    }
+                });
+            });
+            
+
             tinymce.init({
               selector: 'textarea',
               plugins: 'ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss',

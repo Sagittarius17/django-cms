@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %} CMS | Register {% endblock %}
 {% block content %}
-    <div class="flex flex-col relative top-[10%] w-full lg:w-1/2 bg-gray-900 items-center justify-center p-4 md:p-8 lg:p-16 pb-8 md:pb-16 lg:pb-24">
+    <div class="flex flex-col relative lg:top-[5%] top-[25%] lg:left-[25%] w-full lg:w-1/2 bg-gray-900 items-center justify-center p-4 md:p-8 lg:p-16 pb-8 md:pb-16 lg:pb-24">
         <form action="{% url 'register' %}" method="post">
             {% csrf_token %}
             <h2 class="text-center text-xl md:text-2xl font-bold text-white mb-4">

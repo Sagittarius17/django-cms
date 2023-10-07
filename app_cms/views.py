@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from django.views import View
 import json
 from django.core.files.storage import FileSystemStorage
+from .utils import get_user_profile
 
 # def index_view(request):
 #     return render ( request , 'base.html' )
@@ -57,12 +58,12 @@ def logout_view(request):
 @csrf_exempt
 def profile_view(request):
     user_id = request.session.get('user_id')
-    if user_id:
-        profile = SimpleUser.objects.get(id=user_id)
+    profile = get_user_profile(user_id)
+    if profile:
         context = {
             'is_authenticated': request.user.is_authenticated,
             'profile': profile
-            }
+        }
         return render(request, 'app_cms/profile.html', context)
     else:
         return redirect('login')

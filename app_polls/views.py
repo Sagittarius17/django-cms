@@ -7,6 +7,7 @@ from django.views import generic
 from django.utils import timezone
 from .models import Choice, Question
 from django.views.decorators.csrf import csrf_exempt
+from app_cms.utils import get_user_profile
 
 # Create your views here.
 @csrf_exempt
@@ -39,7 +40,11 @@ class ResultsView(generic.DetailView):
 
 def index(request):
     latest_question_list = Question.objects.order_by("-pub_date")[:5]
-    context = {"latest_question_list": latest_question_list}
+    user_id = request.session.get('user_id')
+    profile = get_user_profile(user_id)
+    context = {"latest_question_list": latest_question_list,
+               'is_authenticated': request.user.is_authenticated, 
+               "profile": profile}
     return render(request, "app_polls/index.html", context)
 
 def detail(request, question_id):
