@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.views.generic import TemplateView
 from .models import Question
@@ -12,7 +12,7 @@ from app_cms.utils import get_user_profile
 # Create your views here.
 @csrf_exempt
 class IndexView(TemplateView):
-    template_name = "app_polls/index.html"
+    template_name = "app_polls/polls.html"
     context_object_name = "latest_question_list"
 
     def get_queryset(self):
@@ -38,14 +38,30 @@ class ResultsView(generic.DetailView):
     template_name = "app_polls/results.html"
 
 
-def index(request):
+def polls(request):
     latest_question_list = Question.objects.order_by("-pub_date")[:5]
     user_id = request.session.get('user_id')
     profile = get_user_profile(user_id)
     context = {"latest_question_list": latest_question_list,
                'is_authenticated': request.user.is_authenticated, 
                "profile": profile}
-    return render(request, "app_polls/index.html", context)
+    return render(request, "app_polls/polls.html", context)
+
+
+def new_poll(request):
+    if request.method == 'POST':
+        question_text = request.POST.get('question_text')
+        # Set pub_date to the current date and time
+        question = Question.objects.create(question_text=question_text, pub_date=timezone.now())
+        
+        for key, value in request.POST.items():
+            if key.startswith("choice_"):
+                Choice.objects.create(question=question, choice_text=value)
+        
+        return redirect('app_polls:polls')
+
+    return render(request, 'app_polls/new_poll.html')
+
 
 def detail(request, question_id):
     question = get_object_or_404(Question, pk=question_id)

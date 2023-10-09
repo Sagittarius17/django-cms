@@ -1,10 +1,12 @@
+{% extends "base.html" %}
+{% load static %}
+
 {% block content %}
-    <div class="bg-white p-6 max-w-md mx-auto rounded-md shadow-md">
+    <div class="relative top-[20%] bg-white p-6 max-w-md mx-auto rounded-md shadow-md">
         <form action="{% url 'app_polls:vote' question.id %}" method="post">
             {% csrf_token %}
         
-            <fieldset>
-                <legend><h1 class="text-2xl mb-4 font-semibold">{{ question.question_text }}</h1></legend>
+            <h1 class="text-2xl text-black mb-4 font-semibold">{{ question.question_text }}</h1>
         
             {% if error_message %}
                 <div class="bg-red-100 text-red-600 p-3 rounded mb-4">
@@ -12,20 +14,18 @@
                 </div>
             {% endif %}
         
-            <div class="space-y-4">
+            <div class="space-y-2">
                 {% for choice in question.choice_set.all %}
-                    <div class="flex items-center">
+                    <div class="flex items-center hover:bg-pink-300 p-1">
                         <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" class="text-blue-500 focus:ring-blue-500 mr-2">
                         <label for="choice{{ forloop.counter }}" class="text-gray-700">{{ choice.choice_text }}</label>
                     </div>
                 {% endfor %}
             </div>
-            </fieldset>
         
             <div class="mt-6">
-                <input type="submit" value="Vote" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:bg-blue-700 focus:outline-none">
+                <input type="submit" value="Vote" class="bg-blue-500 w-full text-white px-4 py-2 rounded hover:bg-blue-600 focus:bg-blue-700 focus:outline-none">
             </div>
         </form>
-        
     </div>
 {% endblock %}

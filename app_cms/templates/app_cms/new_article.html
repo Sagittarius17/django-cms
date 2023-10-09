@@ -6,7 +6,7 @@
         {% csrf_token %}
         <div>
             <input type="text" name="title" placeholder="Title" class="w-full mb-2 p-1 rounded-sm text-black" required>
-            {% comment %} <input type="text" name="author" placeholder="Author" class="mb-2 p-1 rounded-sm text-black"> {% endcomment %}
+            <input type="text" name="author" placeholder="Author" class="mb-2 p-1 rounded-sm text-black">
             <input type="file" name="image" required>
         </div>
         <textarea name="content" placeholder="Content"></textarea>

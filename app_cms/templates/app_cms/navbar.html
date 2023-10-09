@@ -7,32 +7,38 @@
             <div class="flex-shrink-0 flex items-center">
                 <a href="{% url 'article_list' %}" class="font-bold text-xl">CMS<span class="font-normal text-sm">by<span class="font-bold text-sm">shuv</span></span></a>
             </div>
+
             <!-- Profile button for mobile view -->
-            <div id='mobile_profile' class="absolute inset-y-0 right-0 flex items-center lg:hidden sm:hidden">
-                <a href="{% url 'profile' %}" class="flex h-14 items-center hover:bg-gray-600 transition duration-300">
+            <div class="lg:hidden absolute inset-y-0 right-0 flex items-center">
+                <a href="{% url 'register' %}" id="mobile_register" class="h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
+                    <span class=''>Register</span>
+                </a>
+                <a href="{% url 'login' %}" id='mobile_login' class="h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
+                    <span>Login</span>
+                </a>
+                <a href="{% url 'profile' %}" id='mobile_profile' class="h-14 items-center hover:bg-gray-600 transition duration-300">
                     <img class="relative border border-solid rounded-full w-10 h-10" src="{{ profile.profilePic }}" alt="Logged in!">
                 </a>
             </div>
+
             <!-- Desktop menu -->
-            <div class="hidden fixed sm:right-[10%] sm:block sm:ml-6">
-                <div class="flex flex-row">
-                    <div class="flex fixed top-0 right-5 space-x-0">
-                        <a href="{% url 'register' %}" id="register_btn" class="flex h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
-                            <span class=''>Register</span>
-                        </a>
-                        <a href="{% url 'login' %}" id='login_btn' class="flex h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
-                            <span>Login</span>
-                        </a>
-                        <a href="{% url 'profile' %}" id='user_profile' class="sm:hidden fixed right-[5%] h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
-                            <img class="relative border border-solid rounded-full w-10 h-10" src="{{ profile.profilePic }}" alt="Logged in!">
-                            <span id="username" class='ml-1 pr-2 text-lg font-medium'>{{ profile.username }}</span>
-                        </a>
-                    </div>
-                    <div id='logout_btn' class="hidden fixed right-[0.5%] top-0 h-14">
-                        <a href="{% url 'logout' %}" class="flex h-full bg-black items-center hover:bg-gray-600 transition duration-300">
-                            <img class="w-8 h-8" src="{% static 'images/logout.png' %}" title="Logout!">
-                        </a>
-                    </div>
+            <div class="sm:hidden fixed right-[10%] block ml-6">
+                <div class="flex fixed top-0 right-5 space-x-0">
+                    <a href="{% url 'register' %}" id="register_btn" class="h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
+                        <span class=''>Register</span>
+                    </a>
+                    <a href="{% url 'login' %}" id='login_btn' class="h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
+                        <span>Login</span>
+                    </a>
+                    <a href="{% url 'profile' %}" id='user_profile' class="fixed right-[5%] h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
+                        <img class="relative border border-solid rounded-full w-10 h-10" src="{{ profile.profilePic }}" alt="Logged in!">
+                        <span id="username" class='ml-1 pr-2 text-lg font-medium'>{{ profile.username }}</span>
+                    </a>
+                </div>
+                <div id='logout_btn' class="fixed right-[0.5%] top-0 h-14">
+                    <a href="{% url 'logout' %}" class="flex h-full bg-black items-center hover:bg-gray-600 transition duration-300">
+                        <img class="w-8 h-8" src="{% static 'images/logout.png' %}" title="Logout!">
+                    </a>
                 </div>
             </div>
         </div>
@@ -42,23 +48,23 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const isAuthenticated = {{ is_authenticated|lower }};
-        const userProfile = document.getElementById('user_profile');
+        const token = localStorage.getItem('userToken');
+
         const mobileProfile = document.getElementById('mobile_profile');
+        const mobileLogin = document.getElementById('mobile_login');
+        const mobileRegister = document.getElementById('mobile_register');
+
+        const userProfile = document.getElementById('user_profile');
         const loginBtn = document.getElementById('login_btn');
         const registerBtn = document.getElementById('register_btn');
         const logoutBtn = document.getElementById('logout_btn');
     
         if (isAuthenticated) {
-            mobileProfile.style.display = "flex"; // for mobile view
-            userProfile.style.display = "flex"; // for desktop view
-            logoutBtn.style.display = "flex";
-            loginBtn.style.display = "none";
-            registerBtn.style.display = "none";
+            // for mobile view
+
+            // for desktop view
         } else {
-            mobileProfile.style.display = "none";
-            loginBtn.style.display = "block";
-            registerBtn.style.display = "block";
         }
     });
-    
+
 </script>

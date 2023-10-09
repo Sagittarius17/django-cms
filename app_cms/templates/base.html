@@ -16,21 +16,25 @@
         {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}"> {% endcomment %}
     </head>
 
-    <body class='flex bg-gray-600 text-white justify-center'>
+    <body class='flex bg-gray-600 text-white justify-center blur-3xl transition-filter duration-500'>
         {% include "app_cms/navbar.html"%}
 
         <div id="main_content" class="flex flex-col justify-center mt-14 w-full">
-            {% if request.path == 'article_detail' %}
-                <a href="{% url 'app_polls:index' %}" class="flex relative justify-center bg-red-500 hover:bg-red-900 transition duration-300 w-full z-9">Create a Poll?</a>
-            {% elif request.path == 'app_polls:detail' %}
-                <a href="{% url 'article_list' %}" class="flex relative justify-center bg-red-500 hover:bg-red-900 transition duration-300 w-full z-9">Create an Article?</a>
-            {% endif %}
+            
+                <a href="{% url 'app_polls:polls' %}" class="flex relative justify-center bg-red-500 hover:bg-red-900 transition duration-300 w-full z-9">Create a Poll?</a>
+            
+                <a href="{% url 'new_article' %}" class="flex relative justify-center bg-red-500 hover:bg-red-900 transition duration-300 w-full z-9">Create an Article?</a>
+            
             {% block content %}
 
             {% endblock %}
         </div>
 
         <script>
+            window.onload = function() {
+                document.body.style.filter = 'none';
+            };
+
             // JavaScript to handle AJAX page changes
             document.addEventListener('DOMContentLoaded', () => {
                 const container = document.getElementById('main_content');
