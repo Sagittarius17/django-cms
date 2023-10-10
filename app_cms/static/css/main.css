@@ -1,0 +1,11 @@
+#screenSizeDetector::before {
+    content: "small";
+    display: none; /* Hide it from view */
+}
+
+/* For screens wider than 768px (you can adjust this) */
+@media screen and (min-width: 769px) {
+    #screenSizeDetector::before {
+        content: "large";
+    }
+}

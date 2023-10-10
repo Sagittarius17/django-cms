@@ -3,11 +3,14 @@ from .models import *
 from django.contrib.auth.hashers import make_password, check_password
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views import View
 import json
 from django.core.files.storage import FileSystemStorage
 from .utils import get_user_profile
+from django.contrib import messages
+
 
 # def index_view(request):
 #     return render ( request , 'base.html' )
@@ -22,10 +25,15 @@ def login_view(request):
             user = SimpleUser.objects.get(username=username)
             if check_password(password, user.password):  # using Django's check_password
                 request.session['user_id'] = user.id  # Set user id in session
+                messages.success(request, 'Successfully logged in!')
                 return redirect('article_list')
+            else:
+                messages.error(request, 'Invalid username or password.')
         except SimpleUser.DoesNotExist:
-            pass
+            messages.error(request, 'Invalid username or password.')
+            
     return render(request, 'app_cms/login.html')
+
 
 
 @csrf_exempt
@@ -121,7 +129,7 @@ def upload_profile_picture(request):
     # return to profile page with some error message if needed
     return redirect('profile')
 
-
+@login_required
 def new_article(request):
     user_id = request.session.get('user_id')
     profile = SimpleUser.objects.get(id=user_id)
@@ -159,7 +167,7 @@ def article_list(request):
         profile = SimpleUser.objects.get(id=user_id)
     except SimpleUser.DoesNotExist:
         profile = None
-        return render(request, 'app_cms/article_list.html')
+        # return render(request, 'app_cms/article_list.html')
     context = {
         'is_authenticated': request.user.is_authenticated,
         'articles': articles, 'profile': profile

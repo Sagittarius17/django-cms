@@ -9,7 +9,7 @@
             </div>
 
             <!-- Profile button for mobile view -->
-            <div class="lg:hidden absolute inset-y-0 right-0 flex items-center">
+            {% comment %} <div class="lg:hidden absolute inset-y-0 right-0 items-center">
                 <a href="{% url 'register' %}" id="mobile_register" class="h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
                     <span class=''>Register</span>
                 </a>
@@ -19,24 +19,24 @@
                 <a href="{% url 'profile' %}" id='mobile_profile' class="h-14 items-center hover:bg-gray-600 transition duration-300">
                     <img class="relative border border-solid rounded-full w-10 h-10" src="{{ profile.profilePic }}" alt="Logged in!">
                 </a>
-            </div>
+            </div> {% endcomment %}
 
             <!-- Desktop menu -->
-            <div class="sm:hidden fixed right-[10%] block ml-6">
+            <div class="fixed right-[10%] ml-6">
                 <div class="flex fixed top-0 right-5 space-x-0">
-                    <a href="{% url 'register' %}" id="register_btn" class="h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
+                    <a href="{% url 'register' %}" id="register_btn" class="lg:hidden h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
                         <span class=''>Register</span>
                     </a>
-                    <a href="{% url 'login' %}" id='login_btn' class="h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
+                    <a href="{% url 'login' %}" id='login_btn' class="lg:hidden h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
                         <span>Login</span>
                     </a>
-                    <a href="{% url 'profile' %}" id='user_profile' class="fixed right-[5%] h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
+                    <a href="{% url 'profile' %}" id='user_profile' class="sm:hidden fixed right-[5%] h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
                         <img class="relative border border-solid rounded-full w-10 h-10" src="{{ profile.profilePic }}" alt="Logged in!">
                         <span id="username" class='ml-1 pr-2 text-lg font-medium'>{{ profile.username }}</span>
                     </a>
                 </div>
                 <div id='logout_btn' class="fixed right-[0.5%] top-0 h-14">
-                    <a href="{% url 'logout' %}" class="flex h-full bg-black items-center hover:bg-gray-600 transition duration-300">
+                    <a href="{% url 'logout' %}" class="sm:hidden flex h-full bg-black items-center hover:bg-gray-600 transition duration-300">
                         <img class="w-8 h-8" src="{% static 'images/logout.png' %}" title="Logout!">
                     </a>
                 </div>
@@ -60,11 +60,9 @@
         const logoutBtn = document.getElementById('logout_btn');
     
         if (isAuthenticated) {
-            // for mobile view
-
-            // for desktop view
+            userProfile.style.display = "";
+            logoutBtn.style.display = "";
         } else {
         }
     });
-
 </script>

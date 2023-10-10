@@ -2,6 +2,15 @@
 {% load static %}
 {% block title %} CMS | Login {% endblock %}
 
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+    <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+    {% endfor %}
+</div>
+{% endif %}
+
+
 {% block content %}
     <div class="flex flex-col relative lg:top-[5%] top-[35%] lg:left-[25%] lg:w-1/2 sm:w-full bg-gray-900 items-center justify-center p-8 lg:p-16 pb-12 md:pb-16 lg:pb-24">
         <form action="{% url 'login' %}" method="post">
