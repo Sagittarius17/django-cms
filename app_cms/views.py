@@ -67,10 +67,12 @@ def logout_view(request):
 def profile_view(request):
     user_id = request.session.get('user_id')
     profile = get_user_profile(user_id)
+    print(user_id, profile)
+    
     if profile:
         context = {
             'is_authenticated': request.user.is_authenticated,
-            'profile': profile
+            'profile': profile, 'user_id': user_id
         }
         return render(request, 'app_cms/profile.html', context)
     else:
@@ -135,7 +137,7 @@ def new_article(request):
     profile = SimpleUser.objects.get(id=user_id)
     context = {
         'is_authenticated': request.user.is_authenticated,
-        'profile': profile
+        'profile': profile, 'user_id': user_id
         }
     if request.method == 'POST':
         title = request.POST['title']
@@ -170,7 +172,7 @@ def article_list(request):
         # return render(request, 'app_cms/article_list.html')
     context = {
         'is_authenticated': request.user.is_authenticated,
-        'articles': articles, 'profile': profile
+        'articles': articles, 'profile': profile, 'user_id': user_id
         }
     return render(request, 'app_cms/article_list.html', context)
 
@@ -206,7 +208,7 @@ def edit_article(request, pk):
         return redirect('article_detail', pk=article.pk)
     context = {
         'is_authenticated': request.user.is_authenticated,
-        'article': article, 'profile': profile
+        'article': article, 'profile': profile, 'user_id': user_id
         }
 
     return render(request, 'app_cms/edit_article.html', context)
@@ -222,9 +224,14 @@ def delete_article(request, pk):
 def article_detail(request, pk):
     article = Article.objects.get(pk=pk)
     user_id = request.session.get('user_id')
-    profile = SimpleUser.objects.get(id=user_id)
+    
+    if user_id:
+        profile = SimpleUser.objects.get(id=user_id)
+    else:
+        profile = None
+
     context = {
         'is_authenticated': request.user.is_authenticated,
-        'article': article, 'profile': profile
+        'article': article, 'profile': profile, 'user_id': user_id
         }
     return render(request, 'app_cms/article_detail.html', context)

@@ -1,6 +1,6 @@
 {% load static %}
 <!-- Navigation bar -->
-<nav class="z-10 bg-slate-500 text-white fixed top-0 w-full">
+<nav id='screenSizeDetector' class="z-10 bg-slate-500 text-white fixed top-0 w-full">
     <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
         <div class="relative flex items-center justify-between h-14">
             <!-- Logo -->
@@ -8,61 +8,57 @@
                 <a href="{% url 'article_list' %}" class="font-bold text-xl">CMS<span class="font-normal text-sm">by<span class="font-bold text-sm">shuv</span></span></a>
             </div>
 
-            <!-- Profile button for mobile view -->
-            {% comment %} <div class="lg:hidden absolute inset-y-0 right-0 items-center">
-                <a href="{% url 'register' %}" id="mobile_register" class="h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
-                    <span class=''>Register</span>
+            <!-- Unauthenticated links -->
+            <div class="flex fixed top-0 right-5 space-x-0">
+                <a href="{% url 'register' %}" id="register_btn" class="hidden h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
+                    <span>Register</span>
                 </a>
-                <a href="{% url 'login' %}" id='mobile_login' class="h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
+                <a href="{% url 'login' %}" id='login_btn' class="hidden h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
                     <span>Login</span>
                 </a>
-                <a href="{% url 'profile' %}" id='mobile_profile' class="h-14 items-center hover:bg-gray-600 transition duration-300">
-                    <img class="relative border border-solid rounded-full w-10 h-10" src="{{ profile.profilePic }}" alt="Logged in!">
-                </a>
-            </div> {% endcomment %}
+            </div>
 
-            <!-- Desktop menu -->
+            <!-- Authenticated links -->
             <div class="fixed right-[10%] ml-6">
-                <div class="flex fixed top-0 right-5 space-x-0">
-                    <a href="{% url 'register' %}" id="register_btn" class="lg:hidden h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
-                        <span class=''>Register</span>
-                    </a>
-                    <a href="{% url 'login' %}" id='login_btn' class="lg:hidden h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
-                        <span>Login</span>
-                    </a>
-                    <a href="{% url 'profile' %}" id='user_profile' class="sm:hidden fixed right-[5%] h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
-                        <img class="relative border border-solid rounded-full w-10 h-10" src="{{ profile.profilePic }}" alt="Logged in!">
-                        <span id="username" class='ml-1 pr-2 text-lg font-medium'>{{ profile.username }}</span>
-                    </a>
-                </div>
-                <div id='logout_btn' class="fixed right-[0.5%] top-0 h-14">
-                    <a href="{% url 'logout' %}" class="sm:hidden flex h-full bg-black items-center hover:bg-gray-600 transition duration-300">
-                        <img class="w-8 h-8" src="{% static 'images/logout.png' %}" title="Logout!">
-                    </a>
-                </div>
+                <a href="{% url 'profile' %}" id='user_profile' class="fixed top-0 right-0 sm:right-[5%] h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
+                    <img class="relative border border-solid rounded-full w-10 h-10" src="{{ profile.profilePic }}" alt="img">
+                    <span id="username" class='lg:block hidden ml-1 pr-2 text-lg font-medium'>{{ profile.username }}</span>
+                </a>
+                <a href="{% url 'logout' %}" id='logout_btn' class="lg:flex hidden right-1 top-0 fixed flex h-14 bg-black items-center hover:bg-gray-600 transition duration-300">
+                    <img class="w-8 h-8" src="{% static 'images/logout.png' %}" title="Logout!">
+                </a>
             </div>
         </div>
     </div>
 </nav>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const isAuthenticated = {{ is_authenticated|lower }};
-        const token = localStorage.getItem('userToken');
+    let isAuthenticated = {{ is_authenticated|lower }};
+    console.log(isAuthenticated);
+    let token = localStorage.getItem('userId');
+    console.log(token);
 
-        const mobileProfile = document.getElementById('mobile_profile');
-        const mobileLogin = document.getElementById('mobile_login');
-        const mobileRegister = document.getElementById('mobile_register');
+    const userProfile = document.getElementById('user_profile');
+    const loginBtn = document.getElementById('login_btn');
+    const registerBtn = document.getElementById('register_btn');
+    const logoutBtn = document.getElementById('logout_btn');
 
-        const userProfile = document.getElementById('user_profile');
-        const loginBtn = document.getElementById('login_btn');
-        const registerBtn = document.getElementById('register_btn');
-        const logoutBtn = document.getElementById('logout_btn');
-    
-        if (isAuthenticated) {
-            userProfile.style.display = "";
-            logoutBtn.style.display = "";
-        } else {
-        }
-    });
+    if (token) {
+        // If the user is authenticated, show the user profile and hide the login/register buttons.
+        userProfile.classList.remove('hidden');
+        userProfile.classList.add('flex');
+
+        loginBtn.classList.add('hidden');
+        registerBtn.classList.add('hidden');
+    } else {
+        // If the user is not authenticated, hide the user profile and show the login/register buttons.
+        userProfile.classList.add('hidden');
+
+        loginBtn.classList.remove('hidden');
+        loginBtn.classList.add('flex');
+
+        registerBtn.classList.remove('hidden');
+        registerBtn.classList.add('flex');
+    }
+
 </script>

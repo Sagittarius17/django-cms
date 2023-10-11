@@ -27,7 +27,7 @@
         </a>
     </div>
 
-    <script>
+    {% comment %} <script>
         const isAuthenticated = {{ is_authenticated|lower }};
         const newArticle = document.getElementById('new_article');
     
@@ -36,5 +36,5 @@
         } else {
             newArticle.style.display = "none";
         }
-    </script>
+    </script> {% endcomment %}
 {% endblock %}

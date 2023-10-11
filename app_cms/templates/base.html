@@ -16,14 +16,14 @@
         <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
     </head>
 
-    <body class='flex bg-gray-600 text-white justify-center blur-3xl transition-filter duration-500'>
+    <body data-user-id="{{ user_id }}" class='flex bg-gray-600 text-white justify-center blur-3xl transition-filter duration-500'>
         {% include "app_cms/navbar.html"%}
 
         <div id="main_content" class="flex flex-col justify-center mt-14 w-full">
             
-                <a href="{% url 'app_polls:polls' %}" class="flex relative justify-center bg-red-500 hover:bg-red-900 transition duration-300 w-full z-9">Create a Poll?</a>
-            
-                <a href="{% url 'new_article' %}" class="flex relative justify-center bg-red-500 hover:bg-red-900 transition duration-300 w-full z-9">Create an Article?</a>
+            {% comment %} <a href="{% url 'app_polls:polls' %}" class="flex relative justify-center bg-red-500 hover:bg-red-900 transition duration-300 w-full z-9">Create a Poll?</a>
+        
+            <a href="{% url 'new_article' %}" class="flex relative justify-center bg-red-500 hover:bg-red-900 transition duration-300 w-full z-9">Create an Article?</a> {% endcomment %}
             
             {% block content %}
 
@@ -31,6 +31,15 @@
         </div>
 
         <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log("JavaScript is running");
+                
+                let userId = document.body.getAttribute('data-user-id');
+                if (userId) {
+                    localStorage.setItem('userId', userId);
+                }
+            });
+            
             window.onload = function() {
                 document.body.style.filter = 'none';
             };
