@@ -22,13 +22,13 @@
                 </a>
             {% endfor %}
         </div>
-        <a href="{% url 'new_article' %}" id='new_article' class="hidden fixed bottom-6 left-6 sm:bottom-[6%] sm:left-[90%] left-[42%] justify-center items-center w-16 h-16 sm:w-20 sm:h-20 rounded">
+        <a href="{% url 'new_article' %}" id='new_article' class="fixed bottom-6 sm:bottom-[6%] lg:left-[90%] sm:left-[42%] justify-center items-center w-16 h-16 sm:w-20 sm:h-20 rounded">
             <img class="w-15 h-15" src="{% static 'images/create-new.png' %}" title="Create new article!">
         </a>
     </div>
 
-    {% comment %} <script>
-        const isAuthenticated = {{ is_authenticated|lower }};
+    <script>
+        let isAuthenticated = {{ is_authenticated|lower }};
         const newArticle = document.getElementById('new_article');
     
         if (isAuthenticated) {
@@ -36,5 +36,5 @@
         } else {
             newArticle.style.display = "none";
         }
-    </script> {% endcomment %}
+    </script>
 {% endblock %}

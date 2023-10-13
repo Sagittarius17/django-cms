@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.views.generic import TemplateView
+from django.views.generic import ListView
 from .models import Question
 from django.urls import reverse
 from django.views import generic
@@ -11,7 +11,7 @@ from app_cms.utils import get_user_profile
 
 # Create your views here.
 @csrf_exempt
-class IndexView(TemplateView):
+class IndexView(ListView):
     template_name = "app_polls/polls.html"
     context_object_name = "latest_question_list"
 
