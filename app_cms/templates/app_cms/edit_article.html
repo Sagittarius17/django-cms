@@ -3,21 +3,24 @@
 {% block title %} CMS | Edit article {% endblock %}
 
 {% block content %}
-    <div class="flex flex-col gap-2">
+    <div class="flex flex-col">
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <label>Title:</label>
-            <input type="text" name="title" value="{{ article.title }}" required>
-            
-            <label>Content:</label>
-            <textarea name="content" placeholder="Content">{{ article.content }}</textarea>
-            {% comment %} <textarea name="content" required>{{ article.content }}</textarea> {% endcomment %}
-            
-            <label>Image:</label>
-            <input type="file" name="image">
-            <img src="{{ article.imageURL }}" alt="{{ article.title }}" width="200">
-        
-            <button type="submit">Update</button>
+            <div class="flex flex-row justify-center gap-4">
+                <div class="flex flex-col justify-center items-center bg-teal-500">
+                    <img src="{{ article.imageURL }}" alt="{{ article.title }}" class="shadow-lg" width="200px">
+                    <div class="bg-black flex items-center justify-center p-4 mt-4 rounded-sm w-full">
+                        <input type="file" name="image" id="imageUpload" class="hidden">
+                        <label for="imageUpload" class="flex justify-center w-full cursor-pointer">Update Image</label>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col gap-2 mr-2">
+                    <input type="text" placeholder="Title" name="title" class="rounded-md mt-2 p-2 text-black" value="{{ article.title }}" required>
+                    <textarea name="content" placeholder="Content">{{ article.content }}</textarea>
+                </div>
+            </div>
+            <button class="w-full mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" type="submit">Update</button>
         </form>
     </div>
 

@@ -1,0 +1,6 @@
+/* Mobile styles */
+@media (max-width: 375px) {
+    .sm-inherit {
+        position: inherit;
+    }
+}

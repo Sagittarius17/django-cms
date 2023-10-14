@@ -9,7 +9,7 @@
                     {% csrf_token %}
                     <input type="file" name="profile_pic" id="fileInput" class="hidden">
                     <label for="fileInput" class="cursor-pointer">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 sm:h-6 w-full sm:w-full bg-white w-full opacity-80 mx-auto hover:text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 sm:h-6 sm:w-full bg-white w-full opacity-80 mx-auto hover:text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                         </svg>
                     </label>
@@ -30,7 +30,7 @@
                 <div contenteditable="true" class="w-full border-2 border-solid border-purple-500 rounded-md p-1 font-bold text-black editable-field" data-field="phn_num">{{ profile.phn_num }}</div>
                 <input type="hidden" id="original-phn_num" value="{{ profile.phn_num }}">
             </div>
-            <button id="save-button" class="hidden flex w-full h-8 bg-blue-500 hover:bg-blue-600 items-center justify-center mb-2 py-2 rounded">Save</button>
+            <button id="save_button" class="hidden sm:flex w-full h-8 bg-blue-500 hover:bg-blue-600 items-center justify-center mb-2 py-2 rounded">Save</button>
             <!-- Uncomment the following line if you want the logout button. -->
             <a href="{% url 'logout' %}" class="sm:hidden flex w-full h-8 bg-yellow-300 items-center justify-center rounded">Logout</a>
         </div>
@@ -39,7 +39,7 @@
 
     <script>
         const editables = document.querySelectorAll('.editable-field');
-        const saveButton = document.getElementById('save-button');
+        const saveButton = document.getElementById('save_button');
 
         editables.forEach(editable => {
             editable.addEventListener('input', () => {
