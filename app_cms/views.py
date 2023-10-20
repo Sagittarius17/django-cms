@@ -179,8 +179,12 @@ def article_list(request):
 
 def edit_article(request, pk):
     article = Article.objects.get(pk=pk)
-    user_id = request.session.get('user_id')
-    profile = SimpleUser.objects.get(id=user_id)
+    
+    try:
+        user_id = request.session['user_id']
+        profile = SimpleUser.objects.get(id=user_id)
+    except (KeyError, SimpleUser.DoesNotExist):
+        return redirect('login')  # or wherever you want to redirect them to.
     
     if request.method == 'POST':
         # Get the new details from POST data

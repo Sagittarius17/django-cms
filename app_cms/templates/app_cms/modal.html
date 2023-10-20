@@ -1,0 +1,30 @@
+{% if show_modal %}
+    <div class="fixed z-10 inset-0 overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen">
+            <div class="bg-white rounded-lg px-4 pt-5 pb-4 sm:p-6 sm:pb-4 sm:px-6">
+            <div>
+                <h3 class="text-lg leading-6 font-medium text-gray-900">
+                Authentication Required
+                </h3>
+                <p class="mt-2 text-sm text-gray-500">
+                To create an article you need to login or create an account.
+                </p>
+            </div>
+            <div class="mt-4 sm:mt-5">
+                <a href="{% url 'login' %}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Login</a>
+                <a href="{% url 'register' %}" class="bg-green-500 text-white ml-2 px-4 py-2 rounded hover:bg-green-600">Register</a>
+                <a href="#" class="text-gray-500 ml-2 px-4 py-2" onclick="closeModal()">Cancel</a>
+            </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+<script>
+
+    function closeModal() {
+        const modal = document.querySelector('.fixed');
+        if (modal) modal.style.display = 'none';
+    }
+    
+</script>

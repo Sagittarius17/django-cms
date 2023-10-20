@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
+<script src="{% static 'js/article_list.js' %}"></script>
+
 {% block title %} CMS | Article list {% endblock %}
 
 {% block content %}
@@ -13,8 +15,12 @@
                     <h2 class="text-lg sm:text-md">{{ article.title }}</h2>
                     <p class="text-sm sm:text-md mb-2 sm:mb-0">Author: {{ article.author }}</p>
                     <p class="text-sm sm:text-md">Published on: {{ article.published_date }}</p>
-                    <div id='article_crud' class="relative lg:right-[6%] lg:absolute gap-4">
-                        <!-- Edit and Delete buttons (only visible if the user is authenticated) -->
+                    
+                    <!-- Placeholder for authentication status -->
+                    <div id="auth-status" data-is-authenticated="{{ is_authenticated|yesno:"true,false" }}"></div>
+
+                    <!-- Edit and Delete buttons -->
+                    <div id="article_crud" class="relative lg:right-[6%] lg:absolute gap-4" style="display: none;"> 
                         <a href="{% url 'edit_article' article.id %}" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Edit</a>
                         <a href="{% url 'delete_article' article.id %}" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600" onclick="return confirm('Are you sure you want to delete this article?')">Delete</a>
                     </div>
@@ -27,4 +33,83 @@
             </a>
         </div>
     </div>
+
+    {% comment %} MODAL {% endcomment %}
+    <div class="fixed z-10 inset-0 overflow-y-auto hidden" id="authModal">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20">
+            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+    
+            <div class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all max-w-lg w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">
+                                Authentication Required
+                            </h3>
+                            <div class="mt-2">
+                                <p class="text-sm text-gray-500">
+                                    To create an article, you need to log in or create an account.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <a href="{% url 'register' %}">
+                        <button class="ml-2 bg-blue-500 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-base font-medium text-white hover:bg-blue-600 focus:outline-none">
+                            Register
+                        </button>
+                    </a>
+                    <a href="{% url 'login' %}">
+                        <button class="bg-green-500 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-base font-medium text-white hover:bg-green-600 focus:outline-none">
+                            Login
+                        </button>
+                    </a>
+                    <button onclick="closeModal()" class="mt-3 bg-gray-500 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-base font-medium text-white hover:bg-gray-600 focus:outline-none sm:mt-0 sm:mr-2">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+
+        function openModal() {
+            document.getElementById("authModal").classList.remove("hidden");
+        }
+        
+        function closeModal() {
+            document.getElementById("authModal").classList.add("hidden");
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const isAuthenticated = {{ is_authenticated|lower }};
+            const newArticleButton = document.getElementById('new_article');
+            const editDelBtn = document.getElementById('article_crud');
+        
+            
+            newArticleButton.addEventListener('click', (e) => {
+                if (!isAuthenticated) {
+                    e.preventDefault();
+                    openModal();
+                }
+            });
+        });
+        
+
+        window.onload = function() {
+            const isAuthenticated = document.getElementById('auth-status').getAttribute('data-is-authenticated') === 'true';
+            const articleCrud = document.getElementById('article_crud');
+    
+            if (isAuthenticated) {
+                articleCrud.style.display = 'block'; // or 'flex', or whatever suits your design
+            } else {
+                articleCrud.style.display = 'none';
+            }
+        }
+    </script>
 {% endblock %}
+
