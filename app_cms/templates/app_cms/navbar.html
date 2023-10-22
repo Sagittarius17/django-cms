@@ -10,10 +10,10 @@
 
             <!-- Unauthenticated links -->
             <div class="flex fixed top-0 right-5 space-x-0">
-                <a href="{% url 'register' %}" id="register_btn" class="hidden h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
+                <a href="{% url 'register' %}" id="register_btn" class="flex h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
                     <span>Register</span>
                 </a>
-                <a href="{% url 'login' %}" id='login_btn' class="hidden h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
+                <a href="{% url 'login' %}" id='login_btn' class="flex h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
                     <span>Login</span>
                 </a>
             </div>
@@ -24,7 +24,7 @@
                     <img class="relative border border-solid rounded-full w-10 h-10" src="{{ profile.profilePic }}" alt="img">
                     <span id="username" class='lg:block hidden ml-1 pr-2 text-lg font-medium'>{{ profile.username }}</span>
                 </a>
-                <a href="{% url 'logout' %}" id='logout_btn' class="lg:flex hidden right-1 top-0 fixed flex h-14 bg-black items-center hover:bg-gray-600 transition duration-300">
+                <a href="{% url 'logout' %}" id='logout_btn' class="lg:flex hidden right-1 top-0 fixed h-14 bg-black items-center hover:bg-gray-600 transition duration-300">
                     <img class="w-8 h-8" src="{% static 'images/logout.png' %}" title="Logout!">
                 </a>
             </div>
@@ -33,15 +33,18 @@
 </nav>
 
 <script>
-    let isAuthenticated = {{ is_authenticated|lower }};
-    console.log(isAuthenticated);
-    let token = localStorage.getItem('userId');
-    console.log(token);
-
     const userProfile = document.getElementById('user_profile');
     const loginBtn = document.getElementById('login_btn');
     const registerBtn = document.getElementById('register_btn');
     const logoutBtn = document.getElementById('logout_btn');
+
+    let isAuthenticated = {{ is_authenticated|lower }};
+    console.log(isAuthenticated);
+
+    
+
+    let token = localStorage.getItem('userId');
+    console.log(token);
 
     if (token) {
         // If the user is authenticated, show the user profile and hide the login/register buttons.
