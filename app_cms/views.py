@@ -66,12 +66,12 @@ def logout_view(request):
 @csrf_exempt
 def profile_view(request):
     user_id = request.session.get('user_id')
+    is_authenticated = bool(user_id)
     profile = get_user_profile(user_id)
-    print(user_id, profile)
     
     if profile:
         context = {
-            'is_authenticated': request.user.is_authenticated,
+            'is_authenticated': is_authenticated,
             'profile': profile, 'user_id': user_id
         }
         return render(request, 'app_cms/profile.html', context)
@@ -134,9 +134,10 @@ def upload_profile_picture(request):
 @login_required
 def new_article(request):
     user_id = request.session.get('user_id')
+    is_authenticated = bool(user_id)
     profile = SimpleUser.objects.get(id=user_id)
     context = {
-        'is_authenticated': request.user.is_authenticated,
+        'is_authenticated': is_authenticated,
         'profile': profile, 'user_id': user_id
         }
     if request.method == 'POST':
@@ -162,16 +163,17 @@ def new_article(request):
 
 @csrf_exempt
 def article_list(request):
-    # articles = Article.objects.all()
     articles = Article.objects.all().order_by('-published_date') # '-' indicates descending order
     user_id = request.session.get('user_id')
+    is_authenticated = bool(user_id)
+    print(is_authenticated)
     try:
         profile = SimpleUser.objects.get(id=user_id)
     except SimpleUser.DoesNotExist:
         profile = None
         # return render(request, 'app_cms/article_list.html')
     context = {
-        'is_authenticated': request.user.is_authenticated,
+        'is_authenticated': is_authenticated,
         'articles': articles, 'profile': profile, 'user_id': user_id
         }
     return render(request, 'app_cms/article_list.html', context)
@@ -179,9 +181,10 @@ def article_list(request):
 
 def edit_article(request, pk):
     article = Article.objects.get(pk=pk)
+    user_id = request.session.get('user_id')
+    is_authenticated = bool(user_id)
     
     try:
-        user_id = request.session['user_id']
         profile = SimpleUser.objects.get(id=user_id)
     except (KeyError, SimpleUser.DoesNotExist):
         return redirect('login')  # or wherever you want to redirect them to.
@@ -211,7 +214,7 @@ def edit_article(request, pk):
         # Redirect to the list or detail view after saving changes
         return redirect('article_detail', pk=article.pk)
     context = {
-        'is_authenticated': request.user.is_authenticated,
+        'is_authenticated': is_authenticated,
         'article': article, 'profile': profile, 'user_id': user_id
         }
 
@@ -228,6 +231,7 @@ def delete_article(request, pk):
 def article_detail(request, pk):
     article = Article.objects.get(pk=pk)
     user_id = request.session.get('user_id')
+    is_authenticated = bool(user_id)
     
     if user_id:
         profile = SimpleUser.objects.get(id=user_id)
@@ -235,7 +239,7 @@ def article_detail(request, pk):
         profile = None
 
     context = {
-        'is_authenticated': request.user.is_authenticated,
+        'is_authenticated': is_authenticated,
         'article': article, 'profile': profile, 'user_id': user_id
         }
     return render(request, 'app_cms/article_detail.html', context)

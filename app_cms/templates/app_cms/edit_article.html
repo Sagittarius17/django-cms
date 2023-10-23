@@ -7,7 +7,7 @@
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="flex flex-row justify-center gap-4">
-                <div class="flex flex-col justify-center items-center bg-teal-500">
+                <div class="flex flex-col justify-center items-center">
                     <img src="{{ article.imageURL }}" alt="{{ article.title }}" class="shadow-lg" width="200px">
                     <div class="bg-black flex items-center justify-center p-4 mt-4 rounded-sm w-full">
                         <input type="file" name="image" id="imageUpload" class="hidden">

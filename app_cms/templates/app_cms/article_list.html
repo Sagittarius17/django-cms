@@ -102,17 +102,6 @@
             });
         });
         
-
-        window.onload = function() {
-            const isAuthenticated = document.getElementById('auth-status').getAttribute('data-is-authenticated') === 'true';
-            const articleCrud = document.getElementById('article_crud');
-    
-            if (isAuthenticated) {
-                articleCrud.style.display = 'block'; // or 'flex', or whatever suits your design
-            } else {
-                articleCrud.style.display = 'none';
-            }
-        }
     </script>
 {% endblock %}
 

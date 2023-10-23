@@ -9,17 +9,17 @@
             </div>
 
             <!-- Unauthenticated links -->
-            <div class="flex fixed top-0 right-5 space-x-0">
-                <a href="{% url 'register' %}" id="register_btn" class="flex h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
+            <div id='register_login_btn' class="flex fixed top-0 right-5 space-x-0">
+                <a href="{% url 'register' %}" class="flex h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
                     <span>Register</span>
                 </a>
-                <a href="{% url 'login' %}" id='login_btn' class="flex h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
+                <a href="{% url 'login' %}" class="flex h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
                     <span>Login</span>
                 </a>
             </div>
 
             <!-- Authenticated links -->
-            <div class="fixed right-[10%] ml-6">
+            <div id='profile_logout_btn' class="fixed right-[10%] ml-6">
                 <a href="{% url 'profile' %}" id='user_profile' class="fixed top-0 right-0 sm:right-[5%] h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
                     <img class="relative border border-solid rounded-full w-10 h-10" src="{{ profile.profilePic }}" alt="img">
                     <span id="username" class='lg:block hidden ml-1 pr-2 text-lg font-medium'>{{ profile.username }}</span>
@@ -34,34 +34,23 @@
 
 <script>
     const userProfile = document.getElementById('user_profile');
-    const loginBtn = document.getElementById('login_btn');
-    const registerBtn = document.getElementById('register_btn');
+    const profileLogoutBtn = document.getElementById('profile_logout_btn');
+    const registerLoginBtn = document.getElementById('register_login_btn');
     const logoutBtn = document.getElementById('logout_btn');
 
     let isAuthenticated = {{ is_authenticated|lower }};
     console.log(isAuthenticated);
 
-    
-
-    let token = localStorage.getItem('userId');
-    console.log(token);
-
-    if (token) {
+    if (isAuthenticated) {
         // If the user is authenticated, show the user profile and hide the login/register buttons.
-        userProfile.classList.remove('hidden');
         userProfile.classList.add('flex');
-
-        loginBtn.classList.add('hidden');
-        registerBtn.classList.add('hidden');
+        logout_btn.classList.add('flex');
+        registerLoginBtn.classList.add('hidden');
     } else {
         // If the user is not authenticated, hide the user profile and show the login/register buttons.
-        userProfile.classList.add('hidden');
-
-        loginBtn.classList.remove('hidden');
-        loginBtn.classList.add('flex');
-
-        registerBtn.classList.remove('hidden');
-        registerBtn.classList.add('flex');
+        profileLogoutBtn.style.display = "none";
+        userProfile.style.display = "none";
+        registerLoginBtn.classList.remove('hidden');
     }
 
 </script>
