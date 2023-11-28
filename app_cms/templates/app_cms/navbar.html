@@ -8,31 +8,33 @@
                 <a href="{% url 'article_list' %}" class="font-bold text-xl">CMS<span class="font-normal text-sm">by<span class="font-bold text-sm">shuv</span></span></a>
             </div>
 
-            <!-- Unauthenticated links -->
-            <div id='register_login_btn' class="flex fixed top-0 right-5 space-x-0">
-                <a href="{% url 'register' %}" class="flex h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
-                    <span>Register</span>
-                </a>
-                <a href="{% url 'login' %}" class="flex h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
-                    <span>Login</span>
-                </a>
-            </div>
-
-            <!-- Authenticated links -->
-            <div id='profile_logout_btn' class="fixed right-[10%] ml-6">
-                <a href="{% url 'profile' %}" id='user_profile' class="fixed top-0 right-0 sm:right-[5%] h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
-                    <img class="relative border border-solid rounded-full w-10 h-10" src="{{ profile.profilePic }}" alt="img">
-                    <span id="username" class='lg:block hidden ml-1 pr-2 text-lg font-medium'>{{ profile.username }}</span>
-                </a>
-                <a href="{% url 'logout' %}" id='logout_btn' class="lg:flex hidden right-1 top-0 fixed h-14 bg-black items-center hover:bg-gray-600 transition duration-300">
-                    <img class="w-8 h-8" src="{% static 'images/logout.png' %}" title="Logout!">
-                </a>
-            </div>
+            {% if not is_authenticated %}
+                <!-- Unauthenticated links -->
+                <div id='register_login_btn' class="flex fixed top-0 right-5 space-x-0">
+                    <a href="{% url 'register' %}" class="flex h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
+                        <span>Register</span>
+                    </a>
+                    <a href="{% url 'login' %}" class="flex h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
+                        <span>Login</span>
+                    </a>
+                </div>
+            {% else %}
+                <!-- Authenticated links -->
+                <div id='profile_logout_btn' class="fixed right-[10%] ml-6">
+                    <a href="{% url 'profile' %}" id='user_profile' class="fixed flex top-0 right-0 sm:right-[5%] h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
+                        <img class="relative border border-solid rounded-full w-10 h-10" src="{{ profile.profilePic }}" alt="img">
+                        <span id="username" class='lg:block hidden ml-1 pr-2 text-lg font-medium'>{{ profile.username }}</span>
+                    </a>
+                    <a href="{% url 'logout' %}" id='logout_btn' class="lg:flex hidden right-1 top-0 fixed h-14 bg-black items-center hover:bg-gray-600 transition duration-300">
+                        <img class="w-8 h-8" src="{% static 'images/logout.png' %}" title="Logout!">
+                    </a>
+                </div>
+            {% endif %}
         </div>
     </div>
 </nav>
 
-<script>
+{% comment %} <script>
     const userProfile = document.getElementById('user_profile');
     const profileLogoutBtn = document.getElementById('profile_logout_btn');
     const registerLoginBtn = document.getElementById('register_login_btn');
@@ -53,4 +55,4 @@
         registerLoginBtn.classList.remove('hidden');
     }
 
-</script>
+</script> {% endcomment %}
