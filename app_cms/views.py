@@ -10,6 +10,9 @@ import json
 from django.core.files.storage import FileSystemStorage
 from .utils import get_user_profile
 from django.contrib import messages
+from django.utils.crypto import get_random_string
+from datetime import datetime
+from pathlib import Path
 
 
 # def index_view(request):
@@ -117,9 +120,14 @@ def upload_profile_picture(request):
         # Fetch the user instance using the user_id
         user = SimpleUser.objects.get(pk=user_id)
 
-        # Save the uploaded image
+        # Generate a unique filename based on the current timestamp and a random string
+        timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+        random_string = get_random_string(length=6)
+        new_filename = f"profile_{user_id}_{timestamp}_{random_string}{Path(profile_pic.name).suffix}"
+
+        # Save the uploaded image with the new filename
         fs = FileSystemStorage(location='static/images')
-        filename = fs.save(profile_pic.name, profile_pic)
+        filename = fs.save(new_filename, profile_pic)
         uploaded_file_url = fs.url(filename)
 
         # Update the user's profile picture
@@ -131,7 +139,7 @@ def upload_profile_picture(request):
     # return to profile page with some error message if needed
     return redirect('profile')
 
-@login_required
+
 def new_article(request):
     user_id = request.session.get('user_id')
     is_authenticated = bool(user_id)
@@ -148,9 +156,14 @@ def new_article(request):
         if author == '':
             author = profile.username
         
-        # Save the uploaded image
+        # Generate a unique filename based on the current timestamp and a random string
+        timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+        random_string = get_random_string(length=6)
+        new_filename = f"{author}_{timestamp}_{random_string}{Path(image.name).suffix}"
+
+        # Save the uploaded image with the new filename
         fs = FileSystemStorage(location='static/images/')
-        filename = fs.save(image.name, image)
+        filename = fs.save(new_filename, image)
         uploaded_file_url = fs.url(filename)
 
         # Save the article
