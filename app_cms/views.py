@@ -180,6 +180,13 @@ def article_list(request):
     user_id = request.session.get('user_id')
     is_authenticated = bool(user_id)
     print(is_authenticated)
+    
+    # Increment view count only if the user is authenticated
+    if user_id and Article.objects.filter(id=user_id).exists():
+        article = Article.objects.get(id=user_id)
+        article.view_count += 1
+        article.save()
+    
     try:
         profile = SimpleUser.objects.get(id=user_id)
     except SimpleUser.DoesNotExist:
@@ -206,13 +213,21 @@ def edit_article(request, pk):
         # Get the new details from POST data
         title = request.POST['title']
         content = request.POST['content']
-        # Add other fields as required
+        author = profile.username
+        print(author)
+        
         
         # If an image is uploaded, handle it
         if 'image' in request.FILES:
             image = request.FILES['image']
+            
+            # Generate a unique filename based on the current timestamp and a random string
+            timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+            random_string = get_random_string(length=6)
+            new_filename = f"{author}_{timestamp}_{random_string}{Path(image.name).suffix}"
+            
             fs = FileSystemStorage(location='static/images/')
-            filename = fs.save(image.name, image)
+            filename = fs.save(new_filename, image)
             uploaded_file_url = fs.url(filename)
             article.image = uploaded_file_url
 

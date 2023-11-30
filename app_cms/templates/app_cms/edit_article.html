@@ -6,17 +6,24 @@
     <div class="flex flex-col">
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="flex flex-row justify-center gap-4">
-                <div class="flex flex-col justify-center items-center">
+            <div class="flex flex-row justify-center mt-2 gap-4">
+                <div class="flex flex-col items-center">
                     <img src="{{ article.imageURL }}" alt="{{ article.title }}" class="shadow-lg" width="200px">
-                    <div class="bg-black flex items-center justify-center p-4 mt-4 rounded-sm w-full">
+                    <button class="bg-black flex items-center justify-center p-4 mt-4 rounded-sm w-full">
                         <input type="file" name="image" id="imageUpload" class="hidden">
                         <label for="imageUpload" class="flex justify-center w-full cursor-pointer">Update Image</label>
-                    </div>
+                    </button>
                 </div>
                 
                 <div class="flex flex-col gap-2 mr-2">
-                    <input type="text" placeholder="Title" name="title" class="rounded-md mt-2 p-2 text-black" value="{{ article.title }}" required>
+                    <div class="flex flex-row w-full rounded-md gap-1 text-black">
+                        <label class="flex w-[10%] rounded-md p-2 bg-white text-black">Author</label>
+                        <input type="text" placeholder="Author" name="title" class="w-full rounded-md p-2 text-black" value="{{ article.author }}" required>
+                    </div>
+                    <div class="flex flex-row w-full rounded-md gap-1 text-black">
+                        <label class="flex w-[10%] rounded-md p-2 bg-white text-black">Title</label>
+                        <input type="text" placeholder="Title" name="title" class="w-full rounded-md p-2 text-black" value="{{ article.title }}" required>
+                    </div>
                     <textarea name="content" placeholder="Content">{{ article.content }}</textarea>
                 </div>
             </div>

@@ -22,7 +22,7 @@
                 <!-- Authenticated links -->
                 <div id='profile_logout_btn' class="fixed right-[10%] ml-6">
                     <a href="{% url 'profile' %}" id='user_profile' class="fixed flex top-0 right-0 sm:right-[5%] h-14 items-center hover:bg-gray-600 transition duration-300 px-2 py-1 text-lg font-medium">
-                        <img class="relative border border-solid rounded-full w-10 h-10" src="{{ profile.profilePic }}" alt="img">
+                        <img class="relative border-2 border-solid rounded-full w-10 h-10" src="{{ profile.profilePic }}" alt="img">
                         <span id="username" class='lg:block hidden ml-1 pr-2 text-lg font-medium'>{{ profile.username }}</span>
                     </a>
                     <a href="{% url 'logout' %}" id='logout_btn' class="lg:flex hidden right-1 top-0 fixed h-14 bg-black items-center hover:bg-gray-600 transition duration-300">
