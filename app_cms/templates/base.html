@@ -16,9 +16,9 @@
         <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.3/tailwind.min.css" rel="stylesheet">
     </head>
 
-    <body data-user-id="{{ user_id }}" class='flex bg-gray-600 text-white justify-center blur-3xl transition-filter duration-500'>
-        {% include "app_cms/navbar.html"%}
-        {% include "app_cms/modal.html"%}
+    <body data-user-id="{{ user_id }}" class='flex flex-col bg-gray-600 text-white items-center blur-3xl transition-filter duration-500'>
+        {% include "app_cms/navbar.html" %}
+        {% include "app_cms/modal.html" %}
 
         <div id="main_content" class="flex flex-col justify-center mt-14 w-[80%]">
             
@@ -30,7 +30,7 @@
             {% endblock %}
         </div>
 
-        {% comment %} {% include "app_cms/band_footer.html"%} {% endcomment %}
+        {% comment %} {% include "app_cms/band_footer.html" %} {% endcomment %}
         
         <script>
             document.addEventListener('DOMContentLoaded', function() {

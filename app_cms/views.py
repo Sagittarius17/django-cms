@@ -258,6 +258,7 @@ def delete_article(request, pk):
 @csrf_exempt
 def article_detail(request, pk):
     article = Article.objects.get(pk=pk)
+    article.increment_view_count()
     user_id = request.session.get('user_id')
     is_authenticated = bool(user_id)
     

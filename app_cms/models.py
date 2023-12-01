@@ -35,6 +35,10 @@ class Article(models.Model):
     def __str__(self):
         return self.title
     
+    def increment_view_count(self):
+        self.view_count += 1
+        self.save()
+    
     @property
     def imageURL(self):
         try:
