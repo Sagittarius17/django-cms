@@ -21,5 +21,10 @@
                 <p class="text-center text-gray-500">No app_polls are available.</p>
             {% endif %}
         </div>
+        <div class="flex justify-center w-full">
+            <a href="{% url 'new_poll' %}" id='new_poll' class="fixed bottom-6 sm:bottom-[6%] lg:left-[90%] justify-center items-center w-16 h-16 sm:w-20 sm:h-20 rounded">
+                <img class="w-15 h-15" src="{% static 'images/create-new.png' %}" title="Create new poll!">
+            </a>
+        </div>
     </div>
 {% endblock %}
