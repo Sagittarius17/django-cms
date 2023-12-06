@@ -23,9 +23,9 @@
         <div id="main_content" class="flex flex-col justify-center mt-14 w-[80%]">
             
             {% if request.resolver_match.url_name == 'article_list' %}
-                <a href="{% url 'app_polls:polls' %}" class="flex relative justify-center bg-red-500 hover:bg-red-900 transition duration-300 w-full z-9">Create a Poll?</a>
+                <a href="{% url 'app_polls:polls' %}" class="flex relative justify-center bg-red-500 hover:bg-red-900 transition duration-300 w-full mb-2 z-9">Create a Poll?</a>
             {% elif request.resolver_match.url_name == 'polls' %}
-                <a href="{% url 'article_list' %}" class="flex relative justify-center bg-red-500 hover:bg-red-900 transition duration-300 w-full z-9">Go to Article section!</a>
+                <a href="{% url 'article_list' %}" class="flex relative justify-center bg-red-500 hover:bg-red-900 transition duration-300 w-full mb-2 z-9">Go to Article section!</a>
             {% endif %}
             
             {% block content %}
