@@ -21,14 +21,14 @@
 
                         <!-- Edit and Delete buttons -->
                         {% if is_authenticated %}
-                            <div id="article_crud" class="flex relative left-[6%] gap-2"> 
+                            <div id="article_crud" class="flex relative left-[5%] gap-2"> 
                                 <a href="{% url 'edit_article' article.id %}" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Edit</a>
                                 <a href="{% url 'delete_article' article.id %}" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600" onclick="return confirm('Are you sure you want to delete this article?')">Delete</a>
                             </div>
                         {% endif %}
                         
                         {% if is_authenticated %}
-                            <div class="relative flex flex-row items-center right-[20%] gap-1 text-sm sm:text-md">
+                            <div class="relative flex flex-col items-center right-[20%] text-sm sm:text-md">
                                 <img class="w-7 h-7" src="{% static 'images/eye.png' %}" title="views">
                                 <span>{{ article.view_count }}</span>
                             </div>

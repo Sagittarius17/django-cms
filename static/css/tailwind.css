@@ -670,7 +670,7 @@ video {
   width: 2rem;
 }
 .w-\[80\%\] {
-  width: 80%;
+  /* width: 80%; */
 }
 .w-full {
   width: 100%;
