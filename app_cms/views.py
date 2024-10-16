@@ -21,12 +21,16 @@ from pathlib import Path
 @csrf_exempt
 def login_view(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        username = request.POST.get('username')
+        password = request.POST.get('password')
         
+        if not username or not password:
+            messages.error(request, 'Username and password are required.')
+            return redirect('login')
+
         try:
             user = SimpleUser.objects.get(username=username)
-            if check_password(password, user.password):  # using Django's check_password
+            if check_password(password, user.password):  # Check hashed password
                 request.session['user_id'] = user.id  # Set user id in session
                 messages.success(request, 'Successfully logged in!')
                 return redirect('article_list')
