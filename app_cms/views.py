@@ -100,8 +100,8 @@ class UpdateProfileView(View):
 
             # Update the fields
             user.username = data.get('username', user.username)
-            user.email = data.get('email', user.email)
-            user.phn_num = data.get('phn_num', user.phn_num)
+            # user.email = data.get('email', user.email)
+            # user.phn_num = data.get('phn_num', user.phn_num)
             
             # ... update any other fields you want ...
 

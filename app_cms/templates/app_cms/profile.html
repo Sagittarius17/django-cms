@@ -1,45 +1,63 @@
 {% extends "base.html" %}
-{% block title %} << {{profile.username}} >> {% endblock %}
-{% block content %}
+{% block title %} << {{profile.username}}>> {% endblock %}
+    {% block content %}
     <div class="w-full sm:w-[60%] lg:w-[40%] mx-auto px-4 sm:px-6 py-8">
-        <div class="flex flex-col w-full justify-center items-center bg-white text-black shadow-lg rounded-lg px-4 py-6 mb-6">
+        <div
+            class="flex flex-col w-full justify-center items-center bg-white text-black shadow-lg rounded-lg px-4 py-6 mb-6">
             <div class="relative mb-10">
-                <img class="w-32 sm:w-40 h-32 sm:h-40 rounded-full bg-gray-600" src="{{ profile.profilePic }}" alt="{{ profile.username }}">
-                <form method="post" enctype="multipart/form-data" action="{% url 'upload_profile_picture' %}" class="absolute bottom-0 text-center w-full">
+                <img class="w-32 sm:w-40 h-32 sm:h-40 rounded-full bg-gray-600" src="{{ profile.profilePic }}"
+                    alt="{{ profile.username }}">
+                <form method="post" enctype="multipart/form-data" action="{% url 'upload_profile_picture' %}"
+                    class="absolute bottom-0 text-center w-full">
                     {% csrf_token %}
                     <input type="file" name="profile_pic" id="fileInput" class="hidden">
                     <label for="fileInput" class="cursor-pointer">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 sm:h-6 sm:w-full bg-white w-full opacity-80 mx-auto hover:text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            class="h-5 sm:h-6 sm:w-full bg-white w-full opacity-80 mx-auto hover:text-blue-500"
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                         </svg>
                     </label>
                 </form>
             </div>
             <div class="flex flex-col sm:flex-row w-full mb-2">
-                <label class="flex flex-start w-full sm:w-full border-2 border-solid border-purple-500 rounded-md mr-1 p-1 mb-2 sm:mb-0 sm:mr-2">Username</label>
-                <div contenteditable="true" class="w-full border-2 border-solid border-purple-500 rounded-md font-bold text-black p-1 editable-field" data-field="username">{{ profile.username }}</div>
+                <label
+                    class="flex flex-start w-full sm:w-full border-2 border-solid border-purple-500 rounded-md mr-1 p-1 mb-2 sm:mb-0 sm:mr-2">Username</label>
+                <div contenteditable="true"
+                    class="w-full border-2 border-solid border-purple-500 rounded-md font-bold text-black p-1 editable-field hover:bg-amber-200"
+                    data-field="username">{{ profile.username }}</div>
                 <input type="hidden" id="original-username" value="{{ profile.username }}">
             </div>
             <div class="flex flex-col sm:flex-row w-full mb-2">
-                <label class="flex flex-start w-full sm:w-full border-2 border-solid border-purple-500 rounded-md mr-1 p-1 mb-2 sm:mb-0 sm:mr-2">Email</label>
-                <div contenteditable="true" class="w-full border-2 border-solid border-purple-500 rounded-md p-1 font-bold text-black editable-field" data-field="email">{{ profile.email }}</div>
+                <label
+                    class="flex flex-start w-full sm:w-full border-2 border-solid border-purple-500 rounded-md mr-1 p-1 mb-2 sm:mb-0 sm:mr-2">Email</label>
+                <div contenteditable="false"
+                    class="w-full border-2 border-solid border-purple-500 rounded-md p-1 font-bold text-black editable-field"
+                    data-field="email">{{ profile.email }}</div>
                 <input type="hidden" id="original-email" value="{{ profile.email }}">
             </div>
             <div class="flex flex-col sm:flex-row w-full mb-6">
-                <label class="flex flex-start w-full sm:w-full border-2 border-solid border-purple-500 rounded-md mr-1 p-1 mb-2 sm:mb-0 sm:mr-2">Phone number</label>
-                <div contenteditable="true" class="w-full border-2 border-solid border-purple-500 rounded-md p-1 font-bold text-black editable-field" data-field="phn_num">{{ profile.phn_num }}</div>
+                <label
+                    class="flex flex-start w-full sm:w-full border-2 border-solid border-purple-500 rounded-md mr-1 p-1 mb-2 sm:mb-0 sm:mr-2">Phone
+                    number</label>
+                <div contenteditable="false"
+                    class="w-full border-2 border-solid border-purple-500 rounded-md p-1 font-bold text-black editable-field"
+                    data-field="phn_num">{{ profile.phn_num }}</div>
                 <input type="hidden" id="original-phn_num" value="{{ profile.phn_num }}">
             </div>
-            <button id="save_button" class="hidden sm:flex w-full h-8 bg-blue-500 hover:bg-blue-600 items-center justify-center mb-2 py-2 rounded">Save</button>
+            <button id="saveButton"
+                class="hidden sm:flex w-full h-8 bg-blue-500 hover:bg-blue-600 items-center justify-center mb-2 py-2 rounded">Save</button>
             <!-- Uncomment the following line if you want the logout button. -->
-            <a href="{% url 'logout' %}" class="sm:hidden flex w-full h-8 bg-yellow-300 items-center justify-center rounded">Logout</a>
+            <a href="{% url 'logout' %}"
+                class="sm:hidden flex w-full h-8 bg-yellow-300 items-center justify-center rounded">Logout</a>
         </div>
     </div>
 
 
     <script>
         const editables = document.querySelectorAll('.editable-field');
-        const saveButton = document.getElementById('save_button');
+        const saveButton = document.querySelector('#saveButton');
 
         editables.forEach(editable => {
             editable.addEventListener('input', () => {
@@ -50,54 +68,70 @@
             });
         });
 
+        // Capture the initial values when the page loads
+        const initialData = {
+            username: document.querySelector('[data-field="username"]').textContent,
+            // email: document.querySelector('[data-field="email"]').textContent,
+            // phn_num: document.querySelector('[data-field="phn_num"]').textContent,
+        };
+
         saveButton.addEventListener('click', () => {
-            const data = {
+            const currentData = {
                 username: document.querySelector('[data-field="username"]').textContent,
-                email: document.querySelector('[data-field="email"]').textContent,
-                phn_num: document.querySelector('[data-field="phn_num"]').textContent,
+                // email: document.querySelector('[data-field="email"]').textContent,
+                // phn_num: document.querySelector('[data-field="phn_num"]').textContent,
             };
-            // Use the `data` object to send a request to the server to save changes
-            // You'd typically make an AJAX call here
+
+            // Check if data has changed
+            const hasChanged = Object.keys(currentData).some(
+                key => currentData[key] !== initialData[key]
+            );
+
+            if (!hasChanged) {
+                alert('No changes detected');
+                return; // Stop further execution if no changes are found
+            }
+
+            // Proceed with AJAX request if there are changes
             fetch('/update_profile/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    // You might need to add the CSRF token header here
+                    // Include CSRF token if necessary
                 },
-                body: JSON.stringify(data),
+                body: JSON.stringify(currentData),
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    alert(data.message);
-                    // Optionally hide the save button again
-                    saveButton.classList.add('hidden');
-                } else {
-                    alert('Error: ' + data.message);
-                }
-            });
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        alert(data.message);
+                        // Hide the save button if changes are saved
+                        saveButton.classList.add('hidden');
+                        // Update initial data to the new current data
+                        Object.assign(initialData, currentData);
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                });
         });
-        
-        document.getElementById('fileInput').addEventListener('change', function() {
+
+
+        document.getElementById('fileInput').addEventListener('change', function () {
             if (this.value) {
                 this.closest('form').submit();
             }
-        });      
-        
+        });
+
         // for changing the username in navbar while editing the username in profile page...
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             const usernameField = document.querySelector('[data-field="username"]');
             const navbarUsername = document.getElementById('username');
-        
-            usernameField.addEventListener('input', function() {
+
+            usernameField.addEventListener('input', function () {
                 navbarUsername.textContent = usernameField.textContent;
             });
         });
-        
+
     </script>
-{% endblock %}
-
-
-
-
-
+    {% endblock %}
